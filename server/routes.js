@@ -3,6 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
+const config = require('./config');
 const db = require('./db');
 const rag = require('./rag');
 const llm = require('./llm');
@@ -26,7 +27,7 @@ router.get('/health', (req, res) => {
   res.json({
     ok: true,
     llm: llm.isAvailable(),
-    model: llm.isAvailable() ? llm.openrouterModel : null,
+    model: llm.isAvailable() ? config.openrouterModel : null,
     kb: rag.kbStats(),
     sessions: db.listSessions().length,
   });
