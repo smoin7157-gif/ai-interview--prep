@@ -2,6 +2,8 @@
 
 A **mock interview co-pilot** that runs fully on your machine. Upload your resume + a job description, and the platform builds a personalized interview around your role and target company, quizzes you with an adaptive AI interviewer, ML-scores every answer, and produces a post-interview report that tracks your improvement across sessions.
 
+> 🔗 **Live on Vercel:** https://ai-interview-prep-nwpr.vercel.app
+
 Built from the spec in `ai prep document.txt`:
 
 > User uploads resume + target job description → RAG pulls relevant interview questions → live mock interview (LLM asks questions, adapts follow-ups) → ML component scores answers on structural criteria → post-interview report with improvement tracking.
