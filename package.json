@@ -2,6 +2,7 @@
   "name": "ai-interview-prep",
   "version": "1.0.0",
   "description": "AI Interview Prep & Feedback Platform — mock interview co-pilot with RAG question bank, adaptive LLM interviewer, ML answer scoring, and multi-session improvement tracking.",
+  "homepage": "https://ai-interview-prep-nwpr.vercel.app",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
