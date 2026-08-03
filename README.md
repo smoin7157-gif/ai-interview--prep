@@ -22,6 +22,15 @@ Plus: 🎤 **voice answers** via the browser's Web Speech API (Chrome/Edge), �
 
 ---
 
+## 🌐 Live deployment
+
+This repo is deployed on Vercel:
+
+- **Production:** https://ai-interview-prep-nwpr.vercel.app
+- GitHub: https://github.com/smoin7157-gif/ai-interview--prep
+
+> ℹ️ To enable the **LLM engine on the hosted app**, add `OPENROUTER_API_KEY` in **Vercel → Project → Settings → Environment Variables** and redeploy. Until then the hosted app runs on the offline rule-based engine (`llm: false`).
+
 ## 🚀 Run locally
 
 Requires **Node.js ≥ 22.5** (uses the built-in `node:sqlite`).
