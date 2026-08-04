@@ -59,11 +59,11 @@ The app runs offline out of the box, but the LLM powers tailored opening questio
 2. Copy `.env.example` → `.env` (already created for you) and paste:
    ```
    OPENROUTER_API_KEY=sk-or-...
-   OPENROUTER_MODEL=openai/gpt-4o-mini   # any OpenRouter model
+   OPENROUTER_MODEL=openai/gpt-oss-20b:free   # free model (default); any OpenRouter model works
    ```
 3. Restart: `npm start`
 
-Free model option: `meta-llama/llama-3.3-70b-instruct:free`
+> Free model option (default): `openai/gpt-oss-20b:free` — run `curl https://openrouter.ai/api/v1/models` (with your key) to list currently available `:free` models.
 
 ---
 

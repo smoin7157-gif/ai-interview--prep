@@ -14,7 +14,7 @@ module.exports = {
 
   // OpenRouter (OpenAI-compatible). Empty key => offline rule-based engine.
   openrouterApiKey: (process.env.OPENROUTER_API_KEY || '').trim(),
-  openrouterModel: process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini',
+  openrouterModel: process.env.OPENROUTER_MODEL || 'openai/gpt-oss-20b:free',
   openrouterBaseUrl: 'https://openrouter.ai/api/v1',
   llmTimeoutMs: 60000,
 
