@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "check": "node --check server/index.js && node --check server/routes.js && node --check server/db.js && node --check server/embed.js && node --check server/llm.js && node --check server/ml.js && node --check server/rag.js && node --check server/interview.js && node --check server/config.js"
+    "check": "node --check server/index.js && node --check server/routes.js && node --check server/db.js && node --check server/embed.js && node --check server/llm.js && node --check server/ml.js && node --check server/rag.js && node --check server/interview.js && node --check server/config.js && node --check server/auth.js"
   },
   "engines": {
     "node": ">=22.5.0"

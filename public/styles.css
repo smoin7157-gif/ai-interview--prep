@@ -796,3 +796,360 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   .chat { max-height: 56vh; padding: 14px; }
   .btn { padding: 12px 20px; }
 }
+
+/* ============================================================
+   ROLES — one identity per audience
+   Students get the cool “coach” journey; teachers get a warm
+   “coaching console”. Distinct palettes, one design system.
+   ============================================================ */
+body[data-role="teacher"] {
+  --accent-1: #f59e0b;
+  --accent-2: #a78bfa;
+  --accent-3: #f472b6;
+  --grad: linear-gradient(120deg, #f59e0b, #a78bfa);
+  --grad-warm: linear-gradient(120deg, #f472b6, #f59e0b);
+}
+body[data-role="teacher"]::selection { background: rgba(245, 158, 11, 0.4); }
+body[data-role="teacher"] .orb-1 { background: #92400e; }
+body[data-role="teacher"] .orb-2 { background: #6d28d9; }
+body[data-role="teacher"] .orb-3 { background: #be185d; }
+body[data-role="teacher"] .nav-link.active {
+  background: linear-gradient(120deg, rgba(245,158,11,0.35), rgba(167,139,250,0.3));
+}
+body[data-role="teacher"] .btn {
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+}
+body[data-role="teacher"] .btn:hover {
+  box-shadow: 0 16px 40px rgba(245, 158, 11, 0.4);
+}
+body[data-role="teacher"] .feature .icon {
+  background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(167,139,250,0.16));
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* ---------- topbar right (user chip) ---------- */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 8px;
+}
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.user-chip .uc-icon {
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-size: 14px;
+  background: var(--grad);
+}
+.user-chip .uc-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-faint);
+}
+.logout-btn:hover { color: var(--red); background: rgba(248,113,113,0.08); }
+
+@media (max-width: 760px) {
+  .topbar { flex-wrap: wrap; row-gap: 8px; }
+  .topnav { order: 3; width: 100%; justify-content: center; flex-wrap: wrap; }
+  .nav-link { padding: 6px 10px; font-size: 13px; }
+  .user-chip .uc-name { display: none; }
+  .topbar-right { margin-left: 0; }
+}
+
+/* ============================================================
+   AUTH — the two doors
+   ============================================================ */
+.auth-wrap { display: flex; justify-content: center; padding-top: 30px; }
+.auth-card {
+  width: min(460px, 100%);
+  padding: 34px 30px 30px;
+  animation: viewIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.auth-head { text-align: center; margin-bottom: 24px; }
+.auth-logo {
+  width: 58px; height: 58px;
+  margin: 0 auto 12px;
+  display: grid; place-items: center;
+  font-size: 28px;
+  border-radius: 18px;
+  background: var(--grad);
+  box-shadow: 0 12px 34px rgba(99, 102, 241, 0.4);
+}
+.auth-head h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; }
+.auth-head p { color: var(--text-dim); font-size: 13.5px; line-height: 1.6; margin-top: 8px; }
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 5px;
+  margin-bottom: 18px;
+}
+.auth-tab {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  padding: 10px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.auth-tab.active {
+  color: white;
+  background: var(--grad);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+}
+
+/* The signature moment: two doors, one for each audience */
+.role-doors { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.role-door {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  font-family: inherit;
+  padding: 18px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+.role-door .rd-icon { font-size: 26px; }
+.role-door .rd-txt { display: flex; flex-direction: column; gap: 3px; }
+.role-door .rd-title { font-weight: 800; font-size: 14.5px; color: var(--text); }
+.role-door .rd-sub { font-size: 11.5px; color: var(--text-faint); line-height: 1.45; }
+.role-door:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+.role-door.teacher-door.active {
+  border-color: rgba(245, 158, 11, 0.55);
+  background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(167,139,250,0.1));
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.35), 0 10px 26px rgba(245, 158, 11, 0.14);
+}
+.role-door.student-door.active {
+  border-color: rgba(34, 211, 238, 0.55);
+  background: linear-gradient(135deg, rgba(34,211,238,0.12), rgba(99,102,241,0.1));
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.35), 0 10px 26px rgba(34, 211, 238, 0.14);
+}
+
+.auth-submit { width: 100%; margin-top: 4px; }
+.auth-error {
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red);
+  text-align: center;
+  min-height: 18px;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   TEACHER WORKSPACE
+   ============================================================ */
+.view-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.view-head .section-sub { margin-bottom: 0; }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  padding: 7px 16px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.teacher-hero { margin-bottom: 26px; }
+.teacher-hero .section-title { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; margin-bottom: 12px; }
+
+.t-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+
+.t-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.t-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text);
+  padding: 22px;
+  cursor: pointer;
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+.t-card:hover { transform: translateY(-4px); border-color: rgba(245, 158, 11, 0.4); background: var(--surface-2); }
+.t-card-icon {
+  width: 52px; height: 52px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  font-size: 26px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(167,139,250,0.16));
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.t-card-body { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.t-card-title { font-weight: 800; font-size: 15.5px; }
+.t-card-sub { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+.t-card-arrow { color: var(--text-faint); font-size: 18px; transition: transform 0.22s ease; }
+.t-card:hover .t-card-arrow { transform: translateX(4px); color: var(--accent-1); }
+
+/* ---------- question bank ---------- */
+.bank-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (max-width: 640px) { .bank-toolbar { grid-template-columns: 1fr; } }
+
+.q-list { display: flex; flex-direction: column; gap: 12px; }
+.q-card { padding: 18px 20px; transition: border-color 0.2s ease, transform 0.2s ease; }
+.q-card:hover { border-color: var(--border-strong); }
+.qc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.qc-text { font-size: 14.5px; font-weight: 700; line-height: 1.55; flex: 1; }
+.qc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.icon-btn {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  font-size: 15px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.icon-btn:hover { background: var(--surface-hover); transform: translateY(-1px); }
+.qc-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.role-pill { color: var(--accent-1); border-color: rgba(245, 158, 11, 0.3); }
+.diff-pill { letter-spacing: 2px; color: var(--text-faint); }
+.qc-points {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 13px;
+}
+
+.q-form {
+  margin-top: 22px;
+  padding: 24px;
+  animation: viewIn 0.35s ease;
+}
+.q-form h3 { margin-bottom: 18px; font-size: 18px; }
+.qf-short { min-height: 84px; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  transition: all 0.18s ease;
+  user-select: none;
+}
+.chip:hover { border-color: var(--border-strong); }
+.chip.on {
+  background: linear-gradient(120deg, rgba(245,158,11,0.25), rgba(167,139,250,0.22));
+  border-color: rgba(245, 158, 11, 0.5);
+  color: white;
+}
+
+/* ---------- assign ---------- */
+.assign-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 860px) { .assign-grid { grid-template-columns: 1fr; } }
+.assign-form, .assign-recent { padding: 24px; }
+.assign-form h3, .assign-recent h3 {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+.assign-item {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.assign-item:hover { border-color: var(--accent-1); transform: translateX(3px); }
+.ai-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ai-student { font-weight: 800; font-size: 14px; }
+.ai-role { font-size: 12.5px; color: var(--text-dim); margin-top: 4px; }
+.ai-meta { font-size: 11.5px; color: var(--text-faint); margin-top: 4px; }
+
+/* ============================================================
+   STUDENT — my interviews
+   ============================================================ */
+.mine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+}
+.mine-card {
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+.mine-card:hover { transform: translateY(-4px); border-color: rgba(34, 211, 238, 0.4); }
+.mc-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.mc-role { font-size: 16px; font-weight: 800; }
+.mc-company { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
+.mc-meta { font-size: 12px; color: var(--text-faint); margin-top: 8px; line-height: 1.5; }
+.mc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.mc-cta { font-size: 13px; font-weight: 800; color: var(--accent-2); }

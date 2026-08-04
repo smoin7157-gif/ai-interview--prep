@@ -37,6 +37,12 @@ function buildIndex() {
 
 const kb = () => loadKb();
 
+/** Write the in-memory knowledge base back to disk (teacher edits). */
+function persistKb() {
+  loadKb();
+  fs.writeFileSync(config.kbPath, JSON.stringify(KB, null, 2));
+}
+
 function roleLabel(role) {
   return (kb().roles[role] && kb().roles[role].label) || (kb().roles.general.label);
 }
@@ -195,4 +201,4 @@ function kbStats() {
   };
 }
 
-module.exports = { loadKb, kbStats, inferProfile, retrieve, roleLabel, companyInfo, resourcesForTopics, topicLabel };
+module.exports = { loadKb, persistKb, kbStats, inferProfile, retrieve, roleLabel, companyInfo, resourcesForTopics, topicLabel };

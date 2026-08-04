@@ -26,7 +26,7 @@ const uid = () => crypto.randomUUID();
 // Session lifecycle
 // ---------------------------------------------------------------------------
 
-async function startSession({ role, company, jd, resumeText, questionCount }) {
+async function startSession({ role, company, jd, resumeText, questionCount, ownerId = null, assignedBy = null }) {
   const profile = rag.inferProfile(jd, resumeText, role, company);
 
   const totalQuestions = Math.max(
@@ -59,6 +59,8 @@ async function startSession({ role, company, jd, resumeText, questionCount }) {
     profile,
     queue,
     state,
+    ownerId,
+    assignedBy,
   });
 
   // Opening: prefer a tailored LLM question, else the best KB warm-up.

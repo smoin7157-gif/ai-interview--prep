@@ -3,142 +3,2084 @@
     "name": "InterviewQ Bank",
     "description": "Curated + pattern-based knowledge base of interview questions, role/topic taxonomies, company-specific patterns, and learning resources. Serves as the retrieval corpus for the RAG pipeline."
   },
-
   "roles": {
-    "software-engineer": { "label": "Software Engineer / SDE", "keywords": ["software engineer", "sde", "developer", "software developer", "programmer", "full stack", "full-stack", "coding", "engineer"] },
-    "frontend": { "label": "Frontend Developer", "keywords": ["frontend", "front-end", "react", "angular", "vue", "ui developer", "web developer"] },
-    "backend": { "label": "Backend Developer", "keywords": ["backend", "back-end", "node", "java", "spring", "microservice", "api developer", "server-side"] },
-    "data-scientist": { "label": "Data Scientist / ML Engineer", "keywords": ["data scientist", "machine learning", "ml engineer", "data analyst", "data science", "statistics", "ai engineer", "data engineer"] },
-    "product-manager": { "label": "Product Manager", "keywords": ["product manager", "product owner", "program manager", "pm role"] },
-    "devops": { "label": "DevOps / Cloud Engineer", "keywords": ["devops", "sre", "site reliability", "cloud engineer", "kubernetes", "ci/cd", "infrastructure"] },
-    "qa": { "label": "QA / Test Engineer", "keywords": ["qa", "quality assurance", "test engineer", "automation tester", "sdets", "software testing"] },
-    "general": { "label": "General / Behavioral", "keywords": [] }
+    "software-engineer": {
+      "label": "Software Engineer / SDE",
+      "keywords": [
+        "software engineer",
+        "sde",
+        "developer",
+        "software developer",
+        "programmer",
+        "full stack",
+        "full-stack",
+        "coding",
+        "engineer"
+      ]
+    },
+    "frontend": {
+      "label": "Frontend Developer",
+      "keywords": [
+        "frontend",
+        "front-end",
+        "react",
+        "angular",
+        "vue",
+        "ui developer",
+        "web developer"
+      ]
+    },
+    "backend": {
+      "label": "Backend Developer",
+      "keywords": [
+        "backend",
+        "back-end",
+        "node",
+        "java",
+        "spring",
+        "microservice",
+        "api developer",
+        "server-side"
+      ]
+    },
+    "data-scientist": {
+      "label": "Data Scientist / ML Engineer",
+      "keywords": [
+        "data scientist",
+        "machine learning",
+        "ml engineer",
+        "data analyst",
+        "data science",
+        "statistics",
+        "ai engineer",
+        "data engineer"
+      ]
+    },
+    "product-manager": {
+      "label": "Product Manager",
+      "keywords": [
+        "product manager",
+        "product owner",
+        "program manager",
+        "pm role"
+      ]
+    },
+    "devops": {
+      "label": "DevOps / Cloud Engineer",
+      "keywords": [
+        "devops",
+        "sre",
+        "site reliability",
+        "cloud engineer",
+        "kubernetes",
+        "ci/cd",
+        "infrastructure"
+      ]
+    },
+    "qa": {
+      "label": "QA / Test Engineer",
+      "keywords": [
+        "qa",
+        "quality assurance",
+        "test engineer",
+        "automation tester",
+        "sdets",
+        "software testing"
+      ]
+    },
+    "general": {
+      "label": "General / Behavioral",
+      "keywords": []
+    }
   },
-
   "topics": {
-    "dsa": { "label": "Data Structures & Algorithms", "keywords": ["algorithms", "data structures", "coding", "dsa", "complexity", "leetcode", "problem solving"] },
-    "system-design": { "label": "System Design", "keywords": ["system design", "architecture", "scalable", "distributed", "design a", "scale"] },
-    "databases": { "label": "Databases", "keywords": ["database", "sql", "nosql", "postgres", "mysql", "mongodb", "indexing", "query"] },
-    "backend": { "label": "Backend & APIs", "keywords": ["backend", "api", "rest", "microservices", "node", "java", "spring", "server"] },
-    "frontend": { "label": "Frontend", "keywords": ["frontend", "react", "javascript", "typescript", "css", "html", "angular", "vue", "browser"] },
-    "web": { "label": "Web / Networking", "keywords": ["http", "browser", "rest", "graphql", "web", "network"] },
-    "os": { "label": "Operating Systems", "keywords": ["operating system", "threads", "process", "memory", "concurrency", "deadlock"] },
-    "ml": { "label": "Machine Learning & Data", "keywords": ["machine learning", "ml", "deep learning", "data science", "python", "pandas", "numpy", "tensorflow", "pytorch", "statistics", "nlp", "model"] },
-    "product": { "label": "Product Thinking", "keywords": ["product", "roadmap", "user research", "feature", "prioritize", "launch"] },
-    "metrics": { "label": "Analytics & Metrics", "keywords": ["metrics", "analytics", "kpi", "ab test", "a/b", "growth", "retention", "conversion"] },
-    "devops": { "label": "DevOps & Cloud", "keywords": ["devops", "ci/cd", "docker", "kubernetes", "aws", "azure", "gcp", "cloud", "terraform", "deployment"] },
-    "sre": { "label": "Reliability & Ops", "keywords": ["sre", "reliability", "on-call", "monitoring", "incident", "sla", "production"] },
-    "qa": { "label": "Testing & Quality", "keywords": ["testing", "qa", "test", "automation", "quality"] },
-    "behavioral": { "label": "Behavioral / Leadership", "keywords": ["leadership", "team", "collaboration", "communication", "stakeholder", "conflict", "manager"] },
-    "hr": { "label": "HR / Culture Fit", "keywords": ["culture", "growth", "values", "introduce", "strengths", "people"] }
+    "dsa": {
+      "label": "Data Structures & Algorithms",
+      "keywords": [
+        "algorithms",
+        "data structures",
+        "coding",
+        "dsa",
+        "complexity",
+        "leetcode",
+        "problem solving"
+      ]
+    },
+    "system-design": {
+      "label": "System Design",
+      "keywords": [
+        "system design",
+        "architecture",
+        "scalable",
+        "distributed",
+        "design a",
+        "scale"
+      ]
+    },
+    "databases": {
+      "label": "Databases",
+      "keywords": [
+        "database",
+        "sql",
+        "nosql",
+        "postgres",
+        "mysql",
+        "mongodb",
+        "indexing",
+        "query"
+      ]
+    },
+    "backend": {
+      "label": "Backend & APIs",
+      "keywords": [
+        "backend",
+        "api",
+        "rest",
+        "microservices",
+        "node",
+        "java",
+        "spring",
+        "server"
+      ]
+    },
+    "frontend": {
+      "label": "Frontend",
+      "keywords": [
+        "frontend",
+        "react",
+        "javascript",
+        "typescript",
+        "css",
+        "html",
+        "angular",
+        "vue",
+        "browser"
+      ]
+    },
+    "web": {
+      "label": "Web / Networking",
+      "keywords": [
+        "http",
+        "browser",
+        "rest",
+        "graphql",
+        "web",
+        "network"
+      ]
+    },
+    "os": {
+      "label": "Operating Systems",
+      "keywords": [
+        "operating system",
+        "threads",
+        "process",
+        "memory",
+        "concurrency",
+        "deadlock"
+      ]
+    },
+    "ml": {
+      "label": "Machine Learning & Data",
+      "keywords": [
+        "machine learning",
+        "ml",
+        "deep learning",
+        "data science",
+        "python",
+        "pandas",
+        "numpy",
+        "tensorflow",
+        "pytorch",
+        "statistics",
+        "nlp",
+        "model"
+      ]
+    },
+    "product": {
+      "label": "Product Thinking",
+      "keywords": [
+        "product",
+        "roadmap",
+        "user research",
+        "feature",
+        "prioritize",
+        "launch"
+      ]
+    },
+    "metrics": {
+      "label": "Analytics & Metrics",
+      "keywords": [
+        "metrics",
+        "analytics",
+        "kpi",
+        "ab test",
+        "a/b",
+        "growth",
+        "retention",
+        "conversion"
+      ]
+    },
+    "devops": {
+      "label": "DevOps & Cloud",
+      "keywords": [
+        "devops",
+        "ci/cd",
+        "docker",
+        "kubernetes",
+        "aws",
+        "azure",
+        "gcp",
+        "cloud",
+        "terraform",
+        "deployment"
+      ]
+    },
+    "sre": {
+      "label": "Reliability & Ops",
+      "keywords": [
+        "sre",
+        "reliability",
+        "on-call",
+        "monitoring",
+        "incident",
+        "sla",
+        "production"
+      ]
+    },
+    "qa": {
+      "label": "Testing & Quality",
+      "keywords": [
+        "testing",
+        "qa",
+        "test",
+        "automation",
+        "quality"
+      ]
+    },
+    "behavioral": {
+      "label": "Behavioral / Leadership",
+      "keywords": [
+        "leadership",
+        "team",
+        "collaboration",
+        "communication",
+        "stakeholder",
+        "conflict",
+        "manager"
+      ]
+    },
+    "hr": {
+      "label": "HR / Culture Fit",
+      "keywords": [
+        "culture",
+        "growth",
+        "values",
+        "introduce",
+        "strengths",
+        "people"
+      ]
+    }
   },
-
   "companies": {
-    "amazon": { "label": "Amazon", "keywords": ["amazon", "aws", "flipkart seller"] , "themes": ["Amazon Leadership Principles: Customer Obsession, Ownership, Deliver Results, Dive Deep", "Bar raiser rounds are heavily STAR-formatted"] },
-    "google": { "label": "Google", "keywords": ["google", "youtube"] , "themes": ["Googleyness and scale-first thinking", "Heavy system design + behavioral (leadership, ambiguity)"] },
-    "microsoft": { "label": "Microsoft", "keywords": ["microsoft", "azure", "office 365"] , "themes": ["Growth mindset, cross-team impact", "Expect 'tell me about a time' questions mapped to competencies"] },
-    "meta": { "label": "Meta", "keywords": ["meta", "facebook", "instagram"] , "themes": ["Move fast, ship mindset, product sense", "Expect ambiguous product/design questions"] },
-    "flipkart": { "label": "Flipkart / E-commerce", "keywords": ["flipkart", "myntra", "phonepe", "e-commerce", "ecommerce", "walmart"] , "themes": ["E-commerce scale: flash sales, traffic spikes, seller ecosystem", "Expect STAR stories about owning outcomes end to end"] },
-    "services": { "label": "IT Services (Infosys/TCS/Wipro)", "keywords": ["infosys", "tcs", "wipro", "accenture", "cognizant", "hcl", "services company", "capgemini"] , "themes": ["Process discipline, client communication, onboarding speed", "Expect HR + situational judgment + basic technical"] }
+    "amazon": {
+      "label": "Amazon",
+      "keywords": [
+        "amazon",
+        "aws",
+        "flipkart seller"
+      ],
+      "themes": [
+        "Amazon Leadership Principles: Customer Obsession, Ownership, Deliver Results, Dive Deep",
+        "Bar raiser rounds are heavily STAR-formatted"
+      ]
+    },
+    "google": {
+      "label": "Google",
+      "keywords": [
+        "google",
+        "youtube"
+      ],
+      "themes": [
+        "Googleyness and scale-first thinking",
+        "Heavy system design + behavioral (leadership, ambiguity)"
+      ]
+    },
+    "microsoft": {
+      "label": "Microsoft",
+      "keywords": [
+        "microsoft",
+        "azure",
+        "office 365"
+      ],
+      "themes": [
+        "Growth mindset, cross-team impact",
+        "Expect 'tell me about a time' questions mapped to competencies"
+      ]
+    },
+    "meta": {
+      "label": "Meta",
+      "keywords": [
+        "meta",
+        "facebook",
+        "instagram"
+      ],
+      "themes": [
+        "Move fast, ship mindset, product sense",
+        "Expect ambiguous product/design questions"
+      ]
+    },
+    "flipkart": {
+      "label": "Flipkart / E-commerce",
+      "keywords": [
+        "flipkart",
+        "myntra",
+        "phonepe",
+        "e-commerce",
+        "ecommerce",
+        "walmart"
+      ],
+      "themes": [
+        "E-commerce scale: flash sales, traffic spikes, seller ecosystem",
+        "Expect STAR stories about owning outcomes end to end"
+      ]
+    },
+    "services": {
+      "label": "IT Services (Infosys/TCS/Wipro)",
+      "keywords": [
+        "infosys",
+        "tcs",
+        "wipro",
+        "accenture",
+        "cognizant",
+        "hcl",
+        "services company",
+        "capgemini"
+      ],
+      "themes": [
+        "Process discipline, client communication, onboarding speed",
+        "Expect HR + situational judgment + basic technical"
+      ]
+    }
   },
-
   "resources": {
-    "dsa": ["LeetCode Top 150 — solve 2 problems daily, time-boxed", "NeetCode Roadmap — structured DSA revision path"],
-    "system-design": ["System Design Primer (GitHub) — fundamentals to advanced", "ByteByteGo — architecture deep dives and diagrams"],
-    "databases": ["Use The Index, Luke! — SQL indexing explained", "MongoDB University — data modeling fundamentals"],
-    "backend": ["System Design Interview (Alex Xu) — backend patterns", "Node.js Best Practices — production-grade APIs"],
-    "frontend": ["MDN Web Docs — the core frontend reference", "React docs — 'Thinking in React' & state management"],
-    "web": ["MDN HTTP — status codes, caching, headers", "GraphQL docs — schema design & resolvers"],
-    "os": ["Operating Systems: Three Easy Pieces (free book)", "CS 162 UC Berkeley lecture notes on concurrency"],
-    "ml": ["Machine Learning Specialization (DeepLearning.AI)", "Hugging Face Course — transformers, NLP, fine-tuning"],
-    "product": ["Cracking the PM Interview — frameworks & cases", "Lenny's Newsletter — prioritization & metrics frameworks"],
-    "metrics": ["Evan Miller — A/B testing statistics made simple", "Amplitude / GA4 analytics courses — metric design"],
-    "devops": ["Kubernetes Official Docs — hands-on tutorials", "roadmap.sh DevOps — CI/CD, Docker, IaC path"],
-    "sre": ["Google SRE Book (free online)", "Incident postmortem writing — Atlassian guide"],
-    "qa": ["Ministry of Testing — testing fundamentals", "Test Pyramid (Martin Fowler) — right-level automation"],
-    "behavioral": ["STAR method workbook — 5 core stories (failure, conflict, initiative, leadership, results)", "Amazon LPs / competency frameworks — map each story to a principle"],
-    "hr": ["Practice a 1-minute intro + 'Why this company' out loud", "Common HR questions bank — strengths, weaknesses, 5-year plan"],
-    "communication": ["Practice answers aloud with a timer — aim for 90 seconds per STAR story"]
+    "dsa": [
+      "LeetCode Top 150 — solve 2 problems daily, time-boxed",
+      "NeetCode Roadmap — structured DSA revision path"
+    ],
+    "system-design": [
+      "System Design Primer (GitHub) — fundamentals to advanced",
+      "ByteByteGo — architecture deep dives and diagrams"
+    ],
+    "databases": [
+      "Use The Index, Luke! — SQL indexing explained",
+      "MongoDB University — data modeling fundamentals"
+    ],
+    "backend": [
+      "System Design Interview (Alex Xu) — backend patterns",
+      "Node.js Best Practices — production-grade APIs"
+    ],
+    "frontend": [
+      "MDN Web Docs — the core frontend reference",
+      "React docs — 'Thinking in React' & state management"
+    ],
+    "web": [
+      "MDN HTTP — status codes, caching, headers",
+      "GraphQL docs — schema design & resolvers"
+    ],
+    "os": [
+      "Operating Systems: Three Easy Pieces (free book)",
+      "CS 162 UC Berkeley lecture notes on concurrency"
+    ],
+    "ml": [
+      "Machine Learning Specialization (DeepLearning.AI)",
+      "Hugging Face Course — transformers, NLP, fine-tuning"
+    ],
+    "product": [
+      "Cracking the PM Interview — frameworks & cases",
+      "Lenny's Newsletter — prioritization & metrics frameworks"
+    ],
+    "metrics": [
+      "Evan Miller — A/B testing statistics made simple",
+      "Amplitude / GA4 analytics courses — metric design"
+    ],
+    "devops": [
+      "Kubernetes Official Docs — hands-on tutorials",
+      "roadmap.sh DevOps — CI/CD, Docker, IaC path"
+    ],
+    "sre": [
+      "Google SRE Book (free online)",
+      "Incident postmortem writing — Atlassian guide"
+    ],
+    "qa": [
+      "Ministry of Testing — testing fundamentals",
+      "Test Pyramid (Martin Fowler) — right-level automation"
+    ],
+    "behavioral": [
+      "STAR method workbook — 5 core stories (failure, conflict, initiative, leadership, results)",
+      "Amazon LPs / competency frameworks — map each story to a principle"
+    ],
+    "hr": [
+      "Practice a 1-minute intro + 'Why this company' out loud",
+      "Common HR questions bank — strengths, weaknesses, 5-year plan"
+    ],
+    "communication": [
+      "Practice answers aloud with a timer — aim for 90 seconds per STAR story"
+    ]
   },
-
   "questions": [
-    { "id": "q001", "roles": ["general"], "topics": ["hr"], "difficulty": 1, "text": "Tell me about yourself.", "idealPoints": ["1-minute structured intro: current role → relevant experience → why this role/company", "Mention 2-3 achievements with numbers, not just duties", "End with a forward-looking sentence tying to the role"], "followUps": ["Walk me through the most relevant project on your resume in a bit more detail.", "What made you pivot/choose this career path?"] },
-    { "id": "q002", "roles": ["general"], "topics": ["hr"], "difficulty": 1, "text": "Why do you want to work here, and why should we hire you?", "idealPoints": ["Connect company mission/products to your own values and skills", "Show specific research about the team or product", "Differentiate yourself with one concrete strength + proof"], "followUps": ["What do you know about our recent product launches or roadmap?", "What would you want to accomplish in your first 90 days?"] },
-    { "id": "q003", "roles": ["general"], "topics": ["behavioral"], "difficulty": 2, "text": "Tell me about a time you failed or made a significant mistake. What did you do?", "idealPoints": ["Own the failure without blaming others", "Describe what you did to fix it and prevent recurrence", "Share a concrete lesson that changed your behavior"], "followUps": ["What would you do differently if you faced the same situation today?", "How did your team or manager react?"] },
-    { "id": "q004", "roles": ["general"], "topics": ["behavioral"], "difficulty": 2, "text": "Describe a time you disagreed with a teammate or manager about a technical or product decision.", "idealPoints": ["Frame the disagreement around data/evidence, not ego", "Explain how you voiced it constructively", "End with the outcome and what you learned about persuasion"], "followUps": ["Did you ever agree just to move forward even though you disagreed? When?", "How do you handle it when you lose the argument?"] },
-    { "id": "q005", "roles": ["general"], "topics": ["behavioral"], "difficulty": 1, "text": "Tell me about a time you received difficult feedback. How did you respond?", "idealPoints": ["Show receptiveness rather than defensiveness", "Describe the concrete change you made after the feedback", "Mention the result if possible"], "followUps": ["How do you typically ask for feedback proactively?", "Who gives you the most useful feedback and why?"] },
-    { "id": "q006", "roles": ["general"], "topics": ["behavioral"], "difficulty": 2, "text": "Describe a time you worked under a tight deadline or high pressure. How did you manage it?", "idealPoints": ["Describe prioritization and triage approach", "Explain communication with stakeholders", "Include the outcome and what you'd repeat"], "followUps": ["What did you deprioritize or drop, and how did you decide?", "How do you keep calm under pressure personally?"] },
-    { "id": "q007", "roles": ["general"], "topics": ["behavioral"], "difficulty": 2, "text": "Tell me about a time you took initiative beyond your assigned responsibilities.", "idealPoints": ["Describe the gap you noticed and the idea you proposed", "Show how you got buy-in or executed without being asked", "Quantify the impact"], "followUps": ["Was there pushback? How did you handle it?", "Did you ever have to do extra work to make it happen?"] },
-    { "id": "q008", "roles": ["general"], "topics": ["behavioral"], "difficulty": 2, "text": "Tell me about a time you led a team or mentored someone. What was your approach?", "idealPoints": ["Describe the situation and your leadership style", "Show how you set direction and supported the person", "Mention the outcome for the team/mentee"], "followUps": ["How do you handle an underperforming team member?", "How do you delegate without micromanaging?"] },
-    { "id": "q009", "roles": ["general"], "topics": ["behavioral"], "difficulty": 1, "text": "How do you stay updated with the latest technologies and industry trends?", "idealPoints": ["Name specific sources (docs, newsletters, courses, communities)", "Show a habit with consistency, e.g., weekly learning block", "Tie it back to applying knowledge at work"], "followUps": ["What is the most recent thing you learned that you've used?", "How much time do you realistically spend on learning per week?"] },
-    { "id": "q010", "roles": ["general"], "topics": ["hr"], "difficulty": 1, "text": "What are your strengths and weaknesses?", "idealPoints": ["Pick strengths relevant to the role with evidence", "Pick a real weakness (not a disguised strength) plus mitigation", "Keep it concise and honest"], "followUps": ["How has that weakness affected you at work recently?", "What are you doing to work on it right now?"] },
-    { "id": "q011", "roles": ["general"], "topics": ["hr"], "difficulty": 1, "text": "Where do you see yourself in five years?", "idealPoints": ["Align growth ambitions with the company's trajectory", "Show commitment to the role, not a generic answer", "Mention skills you want to build"], "followUps": ["How does this role fit into that plan?", "What would you need to learn to get there?"] },
-    { "id": "q012", "roles": ["general"], "topics": ["hr"], "difficulty": 1, "text": "Do you have any questions for us?", "idealPoints": ["Ask about the team, product roadmap, or success metrics", "Ask about growth and what excellence looks like here", "Avoid salary/timing-only questions"], "followUps": ["What does a typical week look like in this role?", "What's the biggest challenge the team is facing right now?"] },
-    { "id": "q013", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 1, "text": "Explain how a hash map works under the hood. When would you choose it over other data structures?", "idealPoints": ["Explain hash function → bucket/index, collisions, chaining vs open addressing", "Mention average O(1) get/put, worst-case O(n)", "Give tradeoffs vs arrays/lists/sets and a real use case"], "followUps": ["How would you handle poor hash distribution?", "What is a load factor and why does resizing matter?"] },
-    { "id": "q014", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 2, "text": "How would you find the kth largest element in an array efficiently?", "idealPoints": ["Mention sorting (O(n log n)), min-heap of size k (O(n log k))", "Mention Quickselect with average O(n)", "Discuss tradeoffs and when each fits"], "followUps": ["How would you modify the approach for a stream of data?", "What's the worst case for Quickselect and how do you mitigate it?"] },
-    { "id": "q015", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 3, "text": "Design an LRU cache from scratch. Walk me through the data structures and operations.", "idealPoints": ["HashMap for O(1) lookup + doubly linked list for O(1) eviction", "Explain get (move to head) and put (evict tail when full)", "Discuss thread-safety options and alternatives (LFU)"], "followUps": ["How would you make this thread-safe in a multithreaded server?", "What if access patterns make LRU perform poorly?"] },
-    { "id": "q016", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 2, "text": "Explain Big-O notation. Give examples of common complexities and why they matter in production.", "idealPoints": ["Define Big-O as asymptotic growth of operations vs input", "Give examples: O(1), O(log n), O(n), O(n log n), O(n²) with concrete code", "Tie to real tradeoffs (sorting, nested loops, binary search)"], "followUps": ["What's the complexity of binary search and what precondition does it need?", "Can you give an example where a worse Big-O is still the right choice?"] },
-    { "id": "q017", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 1, "text": "How would you implement a binary search? What are the edge cases?", "idealPoints": ["Explain the divide-and-conquer invariant and O(log n) time", "Mention sorted precondition and integer overflow in mid", "Handle not-found termination correctly"], "followUps": ["Write the boundary conditions you'd check in a code review.", "How do you find the first occurrence of a duplicate value?"] },
-    { "id": "q018", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 2, "text": "Write a function to reverse a linked list. Walk me through the logic.", "idealPoints": ["Iterative approach with prev/current/next pointers", "Mention the recursive alternative", "Handle empty list and single-node edge cases"], "followUps": ["What's the time and space complexity of each approach?", "How would you reverse a linked list in groups of k?"] },
-    { "id": "q019", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 2, "text": "How would you detect a cycle in a linked list? Compare the approaches.", "idealPoints": ["Hash-set of visited nodes (O(n) space)", "Floyd's tortoise-and-hare (O(1) space)", "Explain why hare/fast steps of 2 works"], "followUps": ["How would you find the start node of the cycle?", "What if the list is huge and fits in memory only partially?"] },
-    { "id": "q020", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 3, "text": "Find the length of the longest substring without repeating characters. Describe your algorithm.", "idealPoints": ["Sliding window with a set/map of characters", "Explain O(n) time, O(min(m, alphabet)) space", "Walk through the window shrink on duplicates"], "followUps": ["How would you return the substring itself, not just the length?", "What if the string can contain unicode or emojis?"] },
-    { "id": "q021", "roles": ["software-engineer", "backend"], "topics": ["dsa"], "difficulty": 3, "text": "Explain Dijkstra's algorithm and when it fails.", "idealPoints": ["Explain priority-queue BFS with greedy relaxation, O((V+E) log V)", "State requirement: non-negative edge weights", "Mention use in routing/maps and alternative (Bellman-Ford) for negative weights"], "followUps": ["Why does Dijkstra fail with negative weights?", "How would you handle a dense graph — is there a better approach?"] },
-    { "id": "q022", "roles": ["software-engineer", "backend"], "topics": ["system-design"], "difficulty": 3, "text": "Design a URL shortener like bit.ly. Walk me through the core components.", "idealPoints": ["API design: POST to shorten, GET redirect for short code", "Short code generation: base62, hashing, or counter + collision handling", "Storage, caching (Redis TTL), 301 vs 302, analytics", "Scale: read-heavy, horizontal scaling, consistent hashing"], "followUps": ["How do you generate unique short codes at scale?", "How would you support custom aliases and expiry?"] },
-    { "id": "q023", "roles": ["software-engineer", "backend"], "topics": ["system-design"], "difficulty": 3, "text": "Design a rate limiter. What algorithms exist and which would you choose?", "idealPoints": ["Define the requirement (per-user/per-IP, sliding vs fixed window)", "Compare fixed window, sliding log, sliding window counter, token bucket, leaky bucket", "Discuss Redis-based distributed implementation and headers (X-RateLimit-*)", "Mention graceful degradation (429, retry-after)"], "followUps": ["How do you rate limit across multiple data centers?", "What happens when the rate limiter itself fails?"] },
-    { "id": "q024", "roles": ["software-engineer", "backend"], "topics": ["system-design"], "difficulty": 2, "text": "Design a chat application (1:1 and group). What are the key architectural pieces?", "idealPoints": ["Realtime transport: WebSockets vs long-polling", "Message flow: send → server → fan-out to recipients", "Storage: message DB, sequence numbers, read receipts", "Presence, offline handling, and horizontal scaling of connections"], "followUps": ["How do you guarantee message ordering across devices?", "How would you implement read receipts efficiently?"] },
-    { "id": "q025", "roles": ["software-engineer", "backend"], "topics": ["system-design"], "difficulty": 3, "text": "Design a recommendation system for a shopping app. Walk me through data and algorithms.", "idealPoints": ["Offline: collaborative filtering (user-item) and content-based features", "Cold start handling: popular items, embeddings, session-based recs", "Online: candidate retrieval + ranking (CTR models)", "Metrics: precision@k, CTR, revenue impact, A/B testing"], "followUps": ["How do you handle the cold start for new users?", "How would you evaluate a new ranking model before rollout?"] },
-    { "id": "q026", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 1, "text": "Explain REST vs GraphQL. When would you choose one over the other?", "idealPoints": ["REST: resource-oriented, multiple round trips, over/under-fetching", "GraphQL: single endpoint, client-defined shape, typed schema", "Tradeoffs: caching, complexity, tooling, N+1 problem"], "followUps": ["How do you handle caching with GraphQL?", "What are common pitfalls when migrating REST to GraphQL?"] },
-    { "id": "q027", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 2, "text": "How does authentication and authorization work? Compare JWT vs session-based.", "idealPoints": ["Authn vs authz distinction", "JWT: stateless, signed, verification flow; risks (leakage, no revocation)", "Sessions: server-side state, easy revocation, scaling concerns", "Mention refresh tokens, HttpOnly cookies, CSRF"], "followUps": ["How do you revoke a stolen JWT?", "Where should you store tokens in a browser and why?"] },
-    { "id": "q028", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 2, "text": "How would you design a background job queue? What guarantees does it need?", "idealPoints": ["Components: producer, queue (Redis/SQS), workers, retries with backoff", "At-least-once vs at-most-once vs exactly-once semantics", "Dead-letter queue, visibility timeout, idempotent consumers", "Observability: job metrics, tracing"], "followUps": ["How do you ensure a job is processed exactly once in a distributed system?", "What happens if a worker crashes mid-job?"] },
-    { "id": "q029", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 3, "text": "What is idempotency and why does it matter in API design?", "idealPoints": ["Define idempotency: same request → same effect", "Examples: payment retries, webhooks, POST vs PUT/PATCH semantics", "Implementation: idempotency keys, unique constraints, conditional writes"], "followUps": ["How would you implement idempotency for a payment endpoint?", "How do GETs and webhook replays fit into idempotency?"] },
-    { "id": "q030", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 1, "text": "Explain common caching strategies and cache invalidation.", "idealPoints": ["Cache-aside (lazy), write-through, write-behind", "TTL, eviction policies, and stampede protection", "Invalidation: explicit delete vs TTL vs versioning", "Where to cache: CDN, app, DB query cache, Redis"], "followUps": ["What is a cache stampede and how do you prevent it?", "How do you keep cache and database consistent?"] },
-    { "id": "q031", "roles": ["software-engineer", "backend"], "topics": ["databases"], "difficulty": 2, "text": "Explain database indexing. What are the tradeoffs?", "idealPoints": ["B-tree index: sorted structure enabling fast lookups/ranges", "Tradeoffs: write overhead, storage, cardinality", "Composite indexes and leftmost prefix rule", "When indexes hurt: low selectivity columns, heavy writes"], "followUps": ["Why does adding an index slow down writes?", "How would you diagnose a slow query — what would you check first?"] },
-    { "id": "q032", "roles": ["software-engineer", "backend"], "topics": ["databases"], "difficulty": 1, "text": "Describe the ACID properties of a transaction.", "idealPoints": ["Atomicity, Consistency, Isolation, Durability — define each", "Give a money-transfer example to illustrate", "Mention tradeoffs: ACID vs BASE in distributed systems"], "followUps": ["What isolation levels exist and which would you pick?", "How do distributed systems relax ACID and why?"] },
-    { "id": "q033", "roles": ["software-engineer", "backend"], "topics": ["databases"], "difficulty": 2, "text": "SQL vs NoSQL: how do you choose which database to use?", "idealPoints": ["SQL: schema, joins, transactions, consistency — good for relational data", "NoSQL: flexibility, horizontal scaling, specialized models (doc, key-value, graph, column)", "Decision drivers: access patterns, scale, team skills, consistency needs", "Mention polyglot persistence as a realistic answer"], "followUps": ["When would you use a document DB over a relational one for e-commerce?", "What is eventual consistency and when is it acceptable?"] },
-    { "id": "q034", "roles": ["software-engineer", "backend"], "topics": ["os"], "difficulty": 2, "text": "What is the difference between a process and a thread?", "idealPoints": ["Process: independent memory space, heavier, isolated", "Thread: shares process memory, lighter, faster context switch", "Concurrency vs parallelism, and when threads are risky"], "followUps": ["What is a race condition and how do you prevent it?", "How does a context switch work and why is it costly?"] },
-    { "id": "q035", "roles": ["software-engineer", "backend"], "topics": ["os"], "difficulty": 2, "text": "What is a deadlock? What conditions cause it and how do you prevent it?", "idealPoints": ["Define deadlock: circular wait on resources", "List the 4 conditions: mutual exclusion, hold-and-wait, no preemption, circular wait", "Prevention: lock ordering, timeouts, single lock, deadlock detection"], "followUps": ["Give a real example from database or multithreaded code.", "How do databases detect and resolve deadlocks?"] },
-    { "id": "q036", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 1, "text": "Explain the virtual DOM and how React uses it.", "idealPoints": ["Virtual DOM = lightweight in-memory representation of UI", "Reconciliation: diff old vs new vDOM → minimal DOM updates", "Tradeoffs: performance vs complexity; mention compiler-driven alternatives"], "followUps": ["What is key prop and why does it matter in lists?", "How does React batch state updates?"] },
-    { "id": "q037", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 2, "text": "Explain closures in JavaScript with a real example.", "idealPoints": ["Closure = function + lexical environment it was created in", "Give example: counter factory, debounce, module pattern", "Mention memory implications and common interview traps"], "followUps": ["What's the difference between let and var in a loop with closures?", "When do closures cause memory leaks?"] },
-    { "id": "q038", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 2, "text": "How do you optimize page load time? Walk me through the main levers.", "idealPoints": ["Network: minify, compress (gzip/brotli), CDN, HTTP/2, preload", "Rendering: critical CSS, lazy loading, image optimization, code splitting", "Measure first: Lighthouse, Core Web Vitals (LCP, CLS, INP)", "Runtime: bundle analysis, tree shaking"], "followUps": ["What are Core Web Vitals and how do you improve LCP specifically?", "How do you decide what to lazy load?"] },
-    { "id": "q039", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 2, "text": "Design an autocomplete search component. What are the key considerations?", "idealPoints": ["Input handling: debounce, abort stale requests, race conditions", "Backend: prefix search, ranking, suggestion sources", "UX: keyboard navigation, highlight, loading/empty/error states", "Performance: local caching, virtualization for long lists"], "followUps": ["How do you handle out-of-order responses?", "How would you cache suggestions on the client?"] },
-    { "id": "q040", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 2, "text": "How would you make a web application accessible?", "idealPoints": ["Semantic HTML, ARIA roles only where needed", "Keyboard navigation, focus management, skip links", "Contrast, reduced motion, screen reader testing", "Automated tools (axe, Lighthouse) + manual testing"], "followUps": ["What is WCAG and what levels have you worked with?", "How do you test accessibility in CI?"] },
-    { "id": "q041", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 1, "text": "Flexbox vs Grid: when do you use each?", "idealPoints": ["Flexbox: one-dimensional layout (row or column)", "Grid: two-dimensional layout (rows and columns together)", "Practical decision rules and common patterns"], "followUps": ["How do you center an element both ways with each?", "What's a good use case for grid auto-fit with minmax?"] },
-    { "id": "q042", "roles": ["software-engineer", "frontend"], "topics": ["frontend"], "difficulty": 2, "text": "How would you implement infinite scroll? What are the pitfalls?", "idealPoints": ["IntersectionObserver on a sentinel element to trigger fetch", "Maintain scroll position, dedupe keys, avoid layout thrash", "Pitfalls: premature triggers, mobile scroll performance, accessibility (provide alternatives)", "Pagination vs infinite scroll tradeoffs"], "followUps": ["How do you handle the back button with infinite scroll?", "What if the scroll container isn't the window?"] },
-    { "id": "q043", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 2, "text": "Explain the event loop in Node.js and how async code is handled.", "idealPoints": ["Single thread + event loop; libuv thread pool for I/O", "Microtasks (Promise) vs macrotasks (setTimeout, I/O callbacks)", "Why blocking the event loop is dangerous; examples", "Worker threads for CPU-heavy work"], "followUps": ["What order do promises, setTimeout, and I/O callbacks run in?", "How would you profile event loop blockage in production?"] },
-    { "id": "q044", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 2, "text": "Explain connection pooling. Why does it matter for database performance?", "idealPoints": ["Creating DB connections is expensive (TCP + handshake + auth)", "Pool reuses connections; size tuning (latency × throughput)", "Starving pools, timeouts, and how ORMs expose it"], "followUps": ["What happens when all pool connections are in use?", "How would you size a connection pool for a service?"] },
-    { "id": "q045", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 1, "text": "Microservices vs monolith: how do you decide?", "idealPoints": ["Monolith: simpler ops, single deploy, fine for small teams", "Microservices: independent scaling, team ownership, fault isolation", "Costs: distributed complexity, network, data consistency, observability", "Mention modular monolith and start-simple evolution"], "followUps": ["What are the hardest operational problems in microservices?", "How do you handle distributed transactions across services?"] },
-    { "id": "q046", "roles": ["software-engineer", "backend"], "topics": ["qa"], "difficulty": 1, "text": "Walk me through your approach to testing code.", "idealPoints": ["Testing pyramid: unit → integration → e2e, right balance", "Test the behavior not implementation; naming conventions", "Coverage as a signal, not a goal; test what matters", "CI gating, flaky test handling"], "followUps": ["How do you decide what deserves an e2e test?", "How do you deal with flaky tests?"] },
-    { "id": "q047", "roles": ["software-engineer", "backend"], "topics": ["web"], "difficulty": 2, "text": "Walk me through what happens when you type a URL and press Enter.", "idealPoints": ["DNS resolution → TCP/TLS handshake → HTTP request", "Server processing → response with headers", "Browser parsing (HTML/CSS/JS) → render, layout, paint", "Mention caching, CDN, and the layers of the stack"], "followUps": ["Where does caching kick in at each step?", "What headers affect caching and security (HSTS, CSP)?"] },
-    { "id": "q048", "roles": ["software-engineer", "backend"], "topics": ["web"], "difficulty": 1, "text": "What is the difference between HTTP and HTTPS, and how does TLS work at a high level?", "idealPoints": ["HTTPS = HTTP over TLS; encryption + authentication", "TLS handshake: cert verification, key exchange, session keys", "Why mixed content and cert expiry matter"], "followUps": ["How does a browser verify a certificate?", "What is HSTS and what does it prevent?"] },
-    { "id": "q049", "roles": ["data-scientist", "software-engineer"], "topics": ["ml"], "difficulty": 1, "text": "Walk me through an end-to-end ML project you worked on.", "idealPoints": ["Problem framing + success metrics with stakeholders", "Data: collection, cleaning, EDA, feature engineering", "Modeling: baseline → candidate models → evaluation", "Deployment, monitoring, and iteration loop"], "followUps": ["How did you evaluate model performance against business metrics?", "What would you do differently next time?"] },
-    { "id": "q050", "roles": ["data-scientist"], "topics": ["ml"], "difficulty": 2, "text": "Explain precision vs recall, and how you choose between them.", "idealPoints": ["Precision: of predicted positives, how many were right", "Recall: of actual positives, how many were found", "Tradeoff and the F1 harmonic mean; PR vs ROC curves", "Domain examples: fraud (precision) vs disease screening (recall)"], "followUps": ["What is the area under the ROC curve and its limitation with imbalanced data?", "In fraud detection, which do you prioritize and why?"] },
-    { "id": "q051", "roles": ["data-scientist"], "topics": ["ml"], "difficulty": 2, "text": "How do you handle imbalanced datasets?", "idealPoints": ["Understand the problem: rare positives, cost of errors", "Data: resampling (SMOTE), class weights, synthetic data", "Modeling: use PR-AUC instead of accuracy, calibration", "Framing: anomaly detection or two-stage pipelines for extreme imbalance"], "followUps": ["Why is accuracy a bad metric for imbalanced data?", "What is SMOTE and what are its pitfalls?"] },
-    { "id": "q052", "roles": ["data-scientist"], "topics": ["ml"], "difficulty": 2, "text": "Explain the bias-variance tradeoff.", "idealPoints": ["Bias: error from overly simple assumptions; variance: sensitivity to training data", "Underfitting vs overfitting relationship", "How to diagnose: train/val error gap, learning curves", "Mitigations: regularization, more data, ensemble methods"], "followUps": ["How would you detect overfitting without a test set?", "How do regularization parameters (e.g., lambda) affect bias and variance?"] },
-    { "id": "q053", "roles": ["data-scientist"], "topics": ["ml"], "difficulty": 2, "text": "How does gradient descent work? What are the variants and pitfalls?", "idealPoints": ["Iteratively move parameters opposite the gradient to minimize loss", "Learning rate: too high diverges, too low slow; scheduling", "Variants: batch, SGD, mini-batch, momentum, Adam", "Pitfalls: local minima, saddle points, feature scaling"], "followUps": ["Why is feature scaling important for gradient descent?", "How does learning rate scheduling help training?"] },
-    { "id": "q054", "roles": ["data-scientist"], "topics": ["ml"], "difficulty": 3, "text": "How would you build a fraud detection system for transactions?", "idealPoints": ["Label/ground truth issues: definition of fraud, delay in labels", "Features: transaction velocity, amount anomalies, device/location signals", "Model: gradient boosting + threshold tuning on PR curve", "Deployment: real-time scoring, drift monitoring, human review loop"], "followUps": ["How do you handle concept drift in fraud patterns?", "How would you measure the business impact of the model?"] },
-    { "id": "q055", "roles": ["data-scientist"], "topics": ["ml"], "difficulty": 1, "text": "What is overfitting and how do you prevent it?", "idealPoints": ["Model fits training noise, generalizes poorly", "Prevention: more data, regularization, simpler models, early stopping, cross-validation", "Diagnosis via train/test error gap"], "followUps": ["How does dropout help in neural networks?", "What is the difference between validation and test sets?"] },
-    { "id": "q056", "roles": ["data-scientist", "product-manager"], "topics": ["metrics"], "difficulty": 2, "text": "Tell me about a time you designed or analyzed an A/B test.", "idealPoints": ["Hypothesis + primary/secondary metrics, guardrail metrics", "Sample size, randomization, duration and novelty effects", "Statistical significance, practical significance, segmentation", "Result → decision and lessons learned"], "followUps": ["What is peeking and why is it a problem?", "What would you do if the test result conflicts with your intuition?"] },
-    { "id": "q057", "roles": ["product-manager"], "topics": ["product"], "difficulty": 2, "text": "How do you prioritize features when everything is urgent?", "idealPoints": ["Frame with user value, business impact, effort/risk", "Frameworks: RICE, MoSCoW, impact/effort matrix", "Bring data + stakeholder alignment to the decision", "Show willingness to say no and revisit"], "followUps": ["How do you handle a stakeholder who disagrees with the priority?", "Which framework do you actually use day-to-day and why?"] },
-    { "id": "q058", "roles": ["product-manager"], "topics": ["product"], "difficulty": 1, "text": "What is the difference between an MVP and a prototype? How do you decide what to build first?", "idealPoints": ["Prototype: validate desirability/feasibility, throwaway", "MVP: smallest thing that delivers value and enables learning", "Decision driven by the biggest risk to validate", "Example walkthrough"], "followUps": ["What's the riskiest assumption in your current product and how would you test it?", "How do you keep an MVP from becoming a prototype?"] },
-    { "id": "q059", "roles": ["product-manager"], "topics": ["product"], "difficulty": 3, "text": "Design a feature for an existing product you use often.", "idealPoints": ["Choose product, define target user and problem with evidence", "Explore solutions, pick one with tradeoffs, define scope", "Define success metrics and rollout plan", "Show user empathy and prioritization discipline"], "followUps": ["What would you build in the first version vs later?", "How would you measure whether it worked?"] },
-    { "id": "q060", "roles": ["product-manager"], "topics": ["product"], "difficulty": 1, "text": "How do you measure product success?", "idealPoints": ["North star metric tied to value delivered", "Input vs output metrics; leading vs lagging", "Examples: activation, retention, engagement, revenue", "Balance: don't optimize a single metric at the expense of health"], "followUps": ["What's your north star for an e-commerce app and why?", "Which counter-metrics would you watch?"] },
-    { "id": "q061", "roles": ["product-manager"], "topics": ["behavioral"], "difficulty": 2, "text": "Tell me about a product you improved. How did you decide what to change?", "idealPoints": ["Describe the product and the problem with user evidence", "Explain the process: research → prioritization → build → measure", "Quantify the impact", "Reflect on what you'd do differently"], "followUps": ["Who did you involve in the decision?", "What did you learn from the users during research?"] },
-    { "id": "q062", "roles": ["product-manager"], "topics": ["behavioral"], "difficulty": 2, "text": "Walk me through a launch you led. What did you own?", "idealPoints": ["Scope: who, what, when; cross-functional coordination", "Risks and rollback plan; go/no-go criteria", "Launch execution + post-launch metrics and iteration", "Show leadership and communication"], "followUps": ["What went wrong during that launch?", "How did you coordinate engineering, design, and marketing?"] },
-    { "id": "q063", "roles": ["product-manager"], "topics": ["metrics"], "difficulty": 2, "text": "What metrics would you track for a subscription product? Build a metric tree.", "idealPoints": ["Acquisition → activation → engagement → retention → revenue → referral", "Key ratios: conversion, churn, LTV, CAC, MRR/ARR, expansion revenue", "Explain leading indicators and guardrails", "Tie each metric to a decision it informs"], "followUps": ["What is the most important metric and why?", "How would you reduce churn?"] },
-    { "id": "q064", "roles": ["product-manager"], "topics": ["behavioral"], "difficulty": 2, "text": "How do you handle a stakeholder who blocks your initiative?", "idealPoints": ["Understand their concerns and incentives first", "Find data and allies; propose a smaller test", "Escalate transparently if needed; build trust over time", "Example from experience"], "followUps": ["When would you push back on a stakeholder?", "How do you rebuild a relationship after disagreement?"] },
-    { "id": "q065", "roles": ["devops", "software-engineer"], "topics": ["devops"], "difficulty": 1, "text": "Explain CI/CD. What are the core components of a pipeline?", "idealPoints": ["CI: build + test on every merge; fast feedback", "CD: automated deploy through environments with gates", "Stages: lint → unit → build artifact → staging → canary → prod", "Quality gates, artifact promotion, rollback"], "followUps": ["How do you handle secrets in CI/CD?", "What's the difference between continuous delivery and continuous deployment?"] },
-    { "id": "q066", "roles": ["devops", "software-engineer"], "topics": ["devops"], "difficulty": 3, "text": "How does Kubernetes schedule pods? Explain the scheduler's decision process.", "idealPoints": ["Scheduling = binding pods to nodes via kube-scheduler", "Filtering (feasibility: resources, taints) then scoring (spread, affinity)", "QoS classes and eviction under pressure", "Hand-rolled scheduling vs cluster autoscaling"], "followUps": ["What is the difference between limits and requests?", "What happens when a node goes down?"] },
-    { "id": "q067", "roles": ["devops"], "topics": ["devops"], "difficulty": 2, "text": "Explain blue-green vs canary deployments.", "idealPoints": ["Blue-green: two identical environments, instant switch, easy rollback", "Canary: gradual % traffic shift with monitoring gates", "Tradeoffs: cost, complexity, state/db compatibility", "When each fits"], "followUps": ["What database migration issues do you hit with blue-green?", "What metrics would gate a canary promotion?"] },
-    { "id": "q068", "roles": ["devops", "software-engineer"], "topics": ["sre"], "difficulty": 2, "text": "You get paged for a service outage at 3 AM. Walk me through your process.", "idealPoints": ["Stabilize first: mitigate (rollback, scale, failover) before deep diagnosis", "Communicate status to stakeholders; maintain a timeline", "Post-incident: blameless postmortem, action items, prevention", "Show calm prioritization"], "followUps": ["How do you decide to roll back vs roll forward?", "What makes a good postmortem?"] },
-    { "id": "q069", "roles": ["devops", "software-engineer"], "topics": ["sre"], "difficulty": 2, "text": "How do you debug a slow API in production?", "idealPoints": ["Reproduce and instrument: APM traces, metrics, logs", "Check tiers: client → network → LB → app → DB → third-party", "Common causes: N+1 queries, missing index, lock contention, GC", "Measure before and after the fix"], "followUps": ["What if the slowness is intermittent?", "How do you add tracing to a legacy system?"] },
-    { "id": "q070", "roles": ["devops"], "topics": ["devops"], "difficulty": 2, "text": "Design monitoring and alerting for a new microservice.", "idealPoints": ["RED vs USE metrics: rate, errors, duration / utilization, saturation", "Logs, metrics, and traces; correlation via request ID", "Alert on symptoms with runbooks, not noise; alert fatigue", "SLIs → SLOs → error budgets"], "followUps": ["What is an error budget and how do you use it?", "How do you avoid alert fatigue?"] },
-    { "id": "q071", "roles": ["qa", "software-engineer"], "topics": ["qa"], "difficulty": 1, "text": "How do you decide what to automate vs test manually?", "idealPoints": ["Automate stable, high-value, repeatable flows; ROI analysis", "Manual for exploratory, usability, visual, one-off scenarios", "Pyramid: many unit, fewer integration, fewest e2e", "Flakiness and maintenance cost considerations"], "followUps": ["How do you sell automation investment to management?", "What's your approach to keeping UI tests stable?"] },
-    { "id": "q072", "roles": ["qa", "software-engineer"], "topics": ["qa"], "difficulty": 2, "text": "Design a test plan for a checkout page. What would you cover?", "idealPoints": ["Functional: happy path, validation, payment gateways, coupons, errors", "Edge: currency, tax, failed payments, timeout, double-click prevention", "Cross-browser, mobile, accessibility", "Priority, risk-based approach, and automation split"], "followUps": ["How do you test payment failure handling?", "What data would you need to prepare?"] },
-    { "id": "q073", "roles": ["qa"], "topics": ["qa"], "difficulty": 1, "text": "Explain the testing pyramid.", "idealPoints": ["Base: fast, numerous unit tests", "Middle: integration tests for module interactions", "Top: few, slow, brittle e2e tests", "Why inverted pyramids are a smell"], "followUps": ["Where would contract testing fit in?", "Why are e2e tests slow and brittle?"] },
-    { "id": "q074", "roles": ["qa"], "topics": ["qa"], "difficulty": 1, "text": "How do you write a good bug report?", "idealPoints": ["Reproducible steps, environment, expected vs actual", "Severity/priority, attachments/logs, affected versions", "Clear title; avoid vague 'it doesn't work'", "Communication with devs for triage"], "followUps": ["What makes a bug unreproducible and what do you do?", "How do you prioritize which bugs to fix first?"] },
-    { "id": "q075", "roles": ["software-engineer", "backend"], "topics": ["behavioral"], "difficulty": 2, "text": "Tell me about the hardest technical problem you've solved.", "idealPoints": ["Set up the context and why it was hard", "Walk through your investigation and the aha moment", "Explain the solution and its impact with numbers", "Show resilience and depth"], "followUps": ["What other approaches did you try first?", "How long did it take and how did you keep going?"] },
-    { "id": "q076", "roles": ["software-engineer", "backend"], "topics": ["system-design"], "difficulty": 2, "text": "Design a news feed for a social app. How do you balance freshness and relevance?", "idealPoints": ["Fan-out on write vs on read; hybrid approaches", "Ranking signals: recency, affinity, engagement", "Storage and caching: precomputed feeds, pagination with cursors", "Scaling: sharding, caching layers, degradation"], "followUps": ["How do you handle the celebrity (super-connector) problem?", "What signals would you use to rank posts?"] },
-    { "id": "q077", "roles": ["software-engineer", "backend"], "topics": ["databases"], "difficulty": 2, "text": "Tell me about a time you optimized a slow database query or service.", "idealPoints": ["Measure first: explain plan, profiling, metrics", "Identify root cause: missing index, N+1, lock, data shape", "Apply fix, verify with numbers, monitor for regression", "Follow engineering rigor with before/after evidence"], "followUps": ["How did you prove the improvement?", "What would you do if adding an index wasn't enough?"] },
-    { "id": "q078", "roles": ["software-engineer", "backend"], "topics": ["backend"], "difficulty": 2, "text": "Tell me about a time you worked with a cross-functional team to ship something.", "idealPoints": ["Describe your role and the coordination involved", "Show communication and expectation management", "Highlight the shipped outcome and any conflict handled", "Keep it concise with a clear narrative arc"], "followUps": ["How did you handle misaligned priorities between teams?", "What would you improve about how you collaborated?"] }
+    {
+      "id": "q001",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "hr"
+      ],
+      "difficulty": 1,
+      "text": "Tell me about yourself.",
+      "idealPoints": [
+        "1-minute structured intro: current role → relevant experience → why this role/company",
+        "Mention 2-3 achievements with numbers, not just duties",
+        "End with a forward-looking sentence tying to the role"
+      ],
+      "followUps": [
+        "Walk me through the most relevant project on your resume in a bit more detail.",
+        "What made you pivot/choose this career path?"
+      ]
+    },
+    {
+      "id": "q002",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "hr"
+      ],
+      "difficulty": 1,
+      "text": "Why do you want to work here, and why should we hire you?",
+      "idealPoints": [
+        "Connect company mission/products to your own values and skills",
+        "Show specific research about the team or product",
+        "Differentiate yourself with one concrete strength + proof"
+      ],
+      "followUps": [
+        "What do you know about our recent product launches or roadmap?",
+        "What would you want to accomplish in your first 90 days?"
+      ]
+    },
+    {
+      "id": "q003",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a time you failed or made a significant mistake. What did you do?",
+      "idealPoints": [
+        "Own the failure without blaming others",
+        "Describe what you did to fix it and prevent recurrence",
+        "Share a concrete lesson that changed your behavior"
+      ],
+      "followUps": [
+        "What would you do differently if you faced the same situation today?",
+        "How did your team or manager react?"
+      ]
+    },
+    {
+      "id": "q004",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Describe a time you disagreed with a teammate or manager about a technical or product decision.",
+      "idealPoints": [
+        "Frame the disagreement around data/evidence, not ego",
+        "Explain how you voiced it constructively",
+        "End with the outcome and what you learned about persuasion"
+      ],
+      "followUps": [
+        "Did you ever agree just to move forward even though you disagreed? When?",
+        "How do you handle it when you lose the argument?"
+      ]
+    },
+    {
+      "id": "q005",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 1,
+      "text": "Tell me about a time you received difficult feedback. How did you respond?",
+      "idealPoints": [
+        "Show receptiveness rather than defensiveness",
+        "Describe the concrete change you made after the feedback",
+        "Mention the result if possible"
+      ],
+      "followUps": [
+        "How do you typically ask for feedback proactively?",
+        "Who gives you the most useful feedback and why?"
+      ]
+    },
+    {
+      "id": "q006",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Describe a time you worked under a tight deadline or high pressure. How did you manage it?",
+      "idealPoints": [
+        "Describe prioritization and triage approach",
+        "Explain communication with stakeholders",
+        "Include the outcome and what you'd repeat"
+      ],
+      "followUps": [
+        "What did you deprioritize or drop, and how did you decide?",
+        "How do you keep calm under pressure personally?"
+      ]
+    },
+    {
+      "id": "q007",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a time you took initiative beyond your assigned responsibilities.",
+      "idealPoints": [
+        "Describe the gap you noticed and the idea you proposed",
+        "Show how you got buy-in or executed without being asked",
+        "Quantify the impact"
+      ],
+      "followUps": [
+        "Was there pushback? How did you handle it?",
+        "Did you ever have to do extra work to make it happen?"
+      ]
+    },
+    {
+      "id": "q008",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a time you led a team or mentored someone. What was your approach?",
+      "idealPoints": [
+        "Describe the situation and your leadership style",
+        "Show how you set direction and supported the person",
+        "Mention the outcome for the team/mentee"
+      ],
+      "followUps": [
+        "How do you handle an underperforming team member?",
+        "How do you delegate without micromanaging?"
+      ]
+    },
+    {
+      "id": "q009",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 1,
+      "text": "How do you stay updated with the latest technologies and industry trends?",
+      "idealPoints": [
+        "Name specific sources (docs, newsletters, courses, communities)",
+        "Show a habit with consistency, e.g., weekly learning block",
+        "Tie it back to applying knowledge at work"
+      ],
+      "followUps": [
+        "What is the most recent thing you learned that you've used?",
+        "How much time do you realistically spend on learning per week?"
+      ]
+    },
+    {
+      "id": "q010",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "hr"
+      ],
+      "difficulty": 1,
+      "text": "What are your strengths and weaknesses?",
+      "idealPoints": [
+        "Pick strengths relevant to the role with evidence",
+        "Pick a real weakness (not a disguised strength) plus mitigation",
+        "Keep it concise and honest"
+      ],
+      "followUps": [
+        "How has that weakness affected you at work recently?",
+        "What are you doing to work on it right now?"
+      ]
+    },
+    {
+      "id": "q011",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "hr"
+      ],
+      "difficulty": 1,
+      "text": "Where do you see yourself in five years?",
+      "idealPoints": [
+        "Align growth ambitions with the company's trajectory",
+        "Show commitment to the role, not a generic answer",
+        "Mention skills you want to build"
+      ],
+      "followUps": [
+        "How does this role fit into that plan?",
+        "What would you need to learn to get there?"
+      ]
+    },
+    {
+      "id": "q012",
+      "roles": [
+        "general"
+      ],
+      "topics": [
+        "hr"
+      ],
+      "difficulty": 1,
+      "text": "Do you have any questions for us?",
+      "idealPoints": [
+        "Ask about the team, product roadmap, or success metrics",
+        "Ask about growth and what excellence looks like here",
+        "Avoid salary/timing-only questions"
+      ],
+      "followUps": [
+        "What does a typical week look like in this role?",
+        "What's the biggest challenge the team is facing right now?"
+      ]
+    },
+    {
+      "id": "q013",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 1,
+      "text": "Explain how a hash map works under the hood. When would you choose it over other data structures?",
+      "idealPoints": [
+        "Explain hash function → bucket/index, collisions, chaining vs open addressing",
+        "Mention average O(1) get/put, worst-case O(n)",
+        "Give tradeoffs vs arrays/lists/sets and a real use case"
+      ],
+      "followUps": [
+        "How would you handle poor hash distribution?",
+        "What is a load factor and why does resizing matter?"
+      ]
+    },
+    {
+      "id": "q014",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 2,
+      "text": "How would you find the kth largest element in an array efficiently?",
+      "idealPoints": [
+        "Mention sorting (O(n log n)), min-heap of size k (O(n log k))",
+        "Mention Quickselect with average O(n)",
+        "Discuss tradeoffs and when each fits"
+      ],
+      "followUps": [
+        "How would you modify the approach for a stream of data?",
+        "What's the worst case for Quickselect and how do you mitigate it?"
+      ]
+    },
+    {
+      "id": "q015",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 3,
+      "text": "Design an LRU cache from scratch. Walk me through the data structures and operations.",
+      "idealPoints": [
+        "HashMap for O(1) lookup + doubly linked list for O(1) eviction",
+        "Explain get (move to head) and put (evict tail when full)",
+        "Discuss thread-safety options and alternatives (LFU)"
+      ],
+      "followUps": [
+        "How would you make this thread-safe in a multithreaded server?",
+        "What if access patterns make LRU perform poorly?"
+      ]
+    },
+    {
+      "id": "q016",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 2,
+      "text": "Explain Big-O notation. Give examples of common complexities and why they matter in production.",
+      "idealPoints": [
+        "Define Big-O as asymptotic growth of operations vs input",
+        "Give examples: O(1), O(log n), O(n), O(n log n), O(n²) with concrete code",
+        "Tie to real tradeoffs (sorting, nested loops, binary search)"
+      ],
+      "followUps": [
+        "What's the complexity of binary search and what precondition does it need?",
+        "Can you give an example where a worse Big-O is still the right choice?"
+      ]
+    },
+    {
+      "id": "q017",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 1,
+      "text": "How would you implement a binary search? What are the edge cases?",
+      "idealPoints": [
+        "Explain the divide-and-conquer invariant and O(log n) time",
+        "Mention sorted precondition and integer overflow in mid",
+        "Handle not-found termination correctly"
+      ],
+      "followUps": [
+        "Write the boundary conditions you'd check in a code review.",
+        "How do you find the first occurrence of a duplicate value?"
+      ]
+    },
+    {
+      "id": "q018",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 2,
+      "text": "Write a function to reverse a linked list. Walk me through the logic.",
+      "idealPoints": [
+        "Iterative approach with prev/current/next pointers",
+        "Mention the recursive alternative",
+        "Handle empty list and single-node edge cases"
+      ],
+      "followUps": [
+        "What's the time and space complexity of each approach?",
+        "How would you reverse a linked list in groups of k?"
+      ]
+    },
+    {
+      "id": "q019",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 2,
+      "text": "How would you detect a cycle in a linked list? Compare the approaches.",
+      "idealPoints": [
+        "Hash-set of visited nodes (O(n) space)",
+        "Floyd's tortoise-and-hare (O(1) space)",
+        "Explain why hare/fast steps of 2 works"
+      ],
+      "followUps": [
+        "How would you find the start node of the cycle?",
+        "What if the list is huge and fits in memory only partially?"
+      ]
+    },
+    {
+      "id": "q020",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 3,
+      "text": "Find the length of the longest substring without repeating characters. Describe your algorithm.",
+      "idealPoints": [
+        "Sliding window with a set/map of characters",
+        "Explain O(n) time, O(min(m, alphabet)) space",
+        "Walk through the window shrink on duplicates"
+      ],
+      "followUps": [
+        "How would you return the substring itself, not just the length?",
+        "What if the string can contain unicode or emojis?"
+      ]
+    },
+    {
+      "id": "q021",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "dsa"
+      ],
+      "difficulty": 3,
+      "text": "Explain Dijkstra's algorithm and when it fails.",
+      "idealPoints": [
+        "Explain priority-queue BFS with greedy relaxation, O((V+E) log V)",
+        "State requirement: non-negative edge weights",
+        "Mention use in routing/maps and alternative (Bellman-Ford) for negative weights"
+      ],
+      "followUps": [
+        "Why does Dijkstra fail with negative weights?",
+        "How would you handle a dense graph — is there a better approach?"
+      ]
+    },
+    {
+      "id": "q022",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "system-design"
+      ],
+      "difficulty": 3,
+      "text": "Design a URL shortener like bit.ly. Walk me through the core components.",
+      "idealPoints": [
+        "API design: POST to shorten, GET redirect for short code",
+        "Short code generation: base62, hashing, or counter + collision handling",
+        "Storage, caching (Redis TTL), 301 vs 302, analytics",
+        "Scale: read-heavy, horizontal scaling, consistent hashing"
+      ],
+      "followUps": [
+        "How do you generate unique short codes at scale?",
+        "How would you support custom aliases and expiry?"
+      ]
+    },
+    {
+      "id": "q023",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "system-design"
+      ],
+      "difficulty": 3,
+      "text": "Design a rate limiter. What algorithms exist and which would you choose?",
+      "idealPoints": [
+        "Define the requirement (per-user/per-IP, sliding vs fixed window)",
+        "Compare fixed window, sliding log, sliding window counter, token bucket, leaky bucket",
+        "Discuss Redis-based distributed implementation and headers (X-RateLimit-*)",
+        "Mention graceful degradation (429, retry-after)"
+      ],
+      "followUps": [
+        "How do you rate limit across multiple data centers?",
+        "What happens when the rate limiter itself fails?"
+      ]
+    },
+    {
+      "id": "q024",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "system-design"
+      ],
+      "difficulty": 2,
+      "text": "Design a chat application (1:1 and group). What are the key architectural pieces?",
+      "idealPoints": [
+        "Realtime transport: WebSockets vs long-polling",
+        "Message flow: send → server → fan-out to recipients",
+        "Storage: message DB, sequence numbers, read receipts",
+        "Presence, offline handling, and horizontal scaling of connections"
+      ],
+      "followUps": [
+        "How do you guarantee message ordering across devices?",
+        "How would you implement read receipts efficiently?"
+      ]
+    },
+    {
+      "id": "q025",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "system-design"
+      ],
+      "difficulty": 3,
+      "text": "Design a recommendation system for a shopping app. Walk me through data and algorithms.",
+      "idealPoints": [
+        "Offline: collaborative filtering (user-item) and content-based features",
+        "Cold start handling: popular items, embeddings, session-based recs",
+        "Online: candidate retrieval + ranking (CTR models)",
+        "Metrics: precision@k, CTR, revenue impact, A/B testing"
+      ],
+      "followUps": [
+        "How do you handle the cold start for new users?",
+        "How would you evaluate a new ranking model before rollout?"
+      ]
+    },
+    {
+      "id": "q026",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 1,
+      "text": "Explain REST vs GraphQL. When would you choose one over the other?",
+      "idealPoints": [
+        "REST: resource-oriented, multiple round trips, over/under-fetching",
+        "GraphQL: single endpoint, client-defined shape, typed schema",
+        "Tradeoffs: caching, complexity, tooling, N+1 problem"
+      ],
+      "followUps": [
+        "How do you handle caching with GraphQL?",
+        "What are common pitfalls when migrating REST to GraphQL?"
+      ]
+    },
+    {
+      "id": "q027",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 2,
+      "text": "How does authentication and authorization work? Compare JWT vs session-based.",
+      "idealPoints": [
+        "Authn vs authz distinction",
+        "JWT: stateless, signed, verification flow; risks (leakage, no revocation)",
+        "Sessions: server-side state, easy revocation, scaling concerns",
+        "Mention refresh tokens, HttpOnly cookies, CSRF"
+      ],
+      "followUps": [
+        "How do you revoke a stolen JWT?",
+        "Where should you store tokens in a browser and why?"
+      ]
+    },
+    {
+      "id": "q028",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 2,
+      "text": "How would you design a background job queue? What guarantees does it need?",
+      "idealPoints": [
+        "Components: producer, queue (Redis/SQS), workers, retries with backoff",
+        "At-least-once vs at-most-once vs exactly-once semantics",
+        "Dead-letter queue, visibility timeout, idempotent consumers",
+        "Observability: job metrics, tracing"
+      ],
+      "followUps": [
+        "How do you ensure a job is processed exactly once in a distributed system?",
+        "What happens if a worker crashes mid-job?"
+      ]
+    },
+    {
+      "id": "q029",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 3,
+      "text": "What is idempotency and why does it matter in API design?",
+      "idealPoints": [
+        "Define idempotency: same request → same effect",
+        "Examples: payment retries, webhooks, POST vs PUT/PATCH semantics",
+        "Implementation: idempotency keys, unique constraints, conditional writes"
+      ],
+      "followUps": [
+        "How would you implement idempotency for a payment endpoint?",
+        "How do GETs and webhook replays fit into idempotency?"
+      ]
+    },
+    {
+      "id": "q030",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 1,
+      "text": "Explain common caching strategies and cache invalidation.",
+      "idealPoints": [
+        "Cache-aside (lazy), write-through, write-behind",
+        "TTL, eviction policies, and stampede protection",
+        "Invalidation: explicit delete vs TTL vs versioning",
+        "Where to cache: CDN, app, DB query cache, Redis"
+      ],
+      "followUps": [
+        "What is a cache stampede and how do you prevent it?",
+        "How do you keep cache and database consistent?"
+      ]
+    },
+    {
+      "id": "q031",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "databases"
+      ],
+      "difficulty": 2,
+      "text": "Explain database indexing. What are the tradeoffs?",
+      "idealPoints": [
+        "B-tree index: sorted structure enabling fast lookups/ranges",
+        "Tradeoffs: write overhead, storage, cardinality",
+        "Composite indexes and leftmost prefix rule",
+        "When indexes hurt: low selectivity columns, heavy writes"
+      ],
+      "followUps": [
+        "Why does adding an index slow down writes?",
+        "How would you diagnose a slow query — what would you check first?"
+      ]
+    },
+    {
+      "id": "q032",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "databases"
+      ],
+      "difficulty": 1,
+      "text": "Describe the ACID properties of a transaction.",
+      "idealPoints": [
+        "Atomicity, Consistency, Isolation, Durability — define each",
+        "Give a money-transfer example to illustrate",
+        "Mention tradeoffs: ACID vs BASE in distributed systems"
+      ],
+      "followUps": [
+        "What isolation levels exist and which would you pick?",
+        "How do distributed systems relax ACID and why?"
+      ]
+    },
+    {
+      "id": "q033",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "databases"
+      ],
+      "difficulty": 2,
+      "text": "SQL vs NoSQL: how do you choose which database to use?",
+      "idealPoints": [
+        "SQL: schema, joins, transactions, consistency — good for relational data",
+        "NoSQL: flexibility, horizontal scaling, specialized models (doc, key-value, graph, column)",
+        "Decision drivers: access patterns, scale, team skills, consistency needs",
+        "Mention polyglot persistence as a realistic answer"
+      ],
+      "followUps": [
+        "When would you use a document DB over a relational one for e-commerce?",
+        "What is eventual consistency and when is it acceptable?"
+      ]
+    },
+    {
+      "id": "q034",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "os"
+      ],
+      "difficulty": 2,
+      "text": "What is the difference between a process and a thread?",
+      "idealPoints": [
+        "Process: independent memory space, heavier, isolated",
+        "Thread: shares process memory, lighter, faster context switch",
+        "Concurrency vs parallelism, and when threads are risky"
+      ],
+      "followUps": [
+        "What is a race condition and how do you prevent it?",
+        "How does a context switch work and why is it costly?"
+      ]
+    },
+    {
+      "id": "q035",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "os"
+      ],
+      "difficulty": 2,
+      "text": "What is a deadlock? What conditions cause it and how do you prevent it?",
+      "idealPoints": [
+        "Define deadlock: circular wait on resources",
+        "List the 4 conditions: mutual exclusion, hold-and-wait, no preemption, circular wait",
+        "Prevention: lock ordering, timeouts, single lock, deadlock detection"
+      ],
+      "followUps": [
+        "Give a real example from database or multithreaded code.",
+        "How do databases detect and resolve deadlocks?"
+      ]
+    },
+    {
+      "id": "q036",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 1,
+      "text": "Explain the virtual DOM and how React uses it.",
+      "idealPoints": [
+        "Virtual DOM = lightweight in-memory representation of UI",
+        "Reconciliation: diff old vs new vDOM → minimal DOM updates",
+        "Tradeoffs: performance vs complexity; mention compiler-driven alternatives"
+      ],
+      "followUps": [
+        "What is key prop and why does it matter in lists?",
+        "How does React batch state updates?"
+      ]
+    },
+    {
+      "id": "q037",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 2,
+      "text": "Explain closures in JavaScript with a real example.",
+      "idealPoints": [
+        "Closure = function + lexical environment it was created in",
+        "Give example: counter factory, debounce, module pattern",
+        "Mention memory implications and common interview traps"
+      ],
+      "followUps": [
+        "What's the difference between let and var in a loop with closures?",
+        "When do closures cause memory leaks?"
+      ]
+    },
+    {
+      "id": "q038",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 2,
+      "text": "How do you optimize page load time? Walk me through the main levers.",
+      "idealPoints": [
+        "Network: minify, compress (gzip/brotli), CDN, HTTP/2, preload",
+        "Rendering: critical CSS, lazy loading, image optimization, code splitting",
+        "Measure first: Lighthouse, Core Web Vitals (LCP, CLS, INP)",
+        "Runtime: bundle analysis, tree shaking"
+      ],
+      "followUps": [
+        "What are Core Web Vitals and how do you improve LCP specifically?",
+        "How do you decide what to lazy load?"
+      ]
+    },
+    {
+      "id": "q039",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 2,
+      "text": "Design an autocomplete search component. What are the key considerations?",
+      "idealPoints": [
+        "Input handling: debounce, abort stale requests, race conditions",
+        "Backend: prefix search, ranking, suggestion sources",
+        "UX: keyboard navigation, highlight, loading/empty/error states",
+        "Performance: local caching, virtualization for long lists"
+      ],
+      "followUps": [
+        "How do you handle out-of-order responses?",
+        "How would you cache suggestions on the client?"
+      ]
+    },
+    {
+      "id": "q040",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 2,
+      "text": "How would you make a web application accessible?",
+      "idealPoints": [
+        "Semantic HTML, ARIA roles only where needed",
+        "Keyboard navigation, focus management, skip links",
+        "Contrast, reduced motion, screen reader testing",
+        "Automated tools (axe, Lighthouse) + manual testing"
+      ],
+      "followUps": [
+        "What is WCAG and what levels have you worked with?",
+        "How do you test accessibility in CI?"
+      ]
+    },
+    {
+      "id": "q041",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 1,
+      "text": "Flexbox vs Grid: when do you use each?",
+      "idealPoints": [
+        "Flexbox: one-dimensional layout (row or column)",
+        "Grid: two-dimensional layout (rows and columns together)",
+        "Practical decision rules and common patterns"
+      ],
+      "followUps": [
+        "How do you center an element both ways with each?",
+        "What's a good use case for grid auto-fit with minmax?"
+      ]
+    },
+    {
+      "id": "q042",
+      "roles": [
+        "software-engineer",
+        "frontend"
+      ],
+      "topics": [
+        "frontend"
+      ],
+      "difficulty": 2,
+      "text": "How would you implement infinite scroll? What are the pitfalls?",
+      "idealPoints": [
+        "IntersectionObserver on a sentinel element to trigger fetch",
+        "Maintain scroll position, dedupe keys, avoid layout thrash",
+        "Pitfalls: premature triggers, mobile scroll performance, accessibility (provide alternatives)",
+        "Pagination vs infinite scroll tradeoffs"
+      ],
+      "followUps": [
+        "How do you handle the back button with infinite scroll?",
+        "What if the scroll container isn't the window?"
+      ]
+    },
+    {
+      "id": "q043",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 2,
+      "text": "Explain the event loop in Node.js and how async code is handled.",
+      "idealPoints": [
+        "Single thread + event loop; libuv thread pool for I/O",
+        "Microtasks (Promise) vs macrotasks (setTimeout, I/O callbacks)",
+        "Why blocking the event loop is dangerous; examples",
+        "Worker threads for CPU-heavy work"
+      ],
+      "followUps": [
+        "What order do promises, setTimeout, and I/O callbacks run in?",
+        "How would you profile event loop blockage in production?"
+      ]
+    },
+    {
+      "id": "q044",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 2,
+      "text": "Explain connection pooling. Why does it matter for database performance?",
+      "idealPoints": [
+        "Creating DB connections is expensive (TCP + handshake + auth)",
+        "Pool reuses connections; size tuning (latency × throughput)",
+        "Starving pools, timeouts, and how ORMs expose it"
+      ],
+      "followUps": [
+        "What happens when all pool connections are in use?",
+        "How would you size a connection pool for a service?"
+      ]
+    },
+    {
+      "id": "q045",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 1,
+      "text": "Microservices vs monolith: how do you decide?",
+      "idealPoints": [
+        "Monolith: simpler ops, single deploy, fine for small teams",
+        "Microservices: independent scaling, team ownership, fault isolation",
+        "Costs: distributed complexity, network, data consistency, observability",
+        "Mention modular monolith and start-simple evolution"
+      ],
+      "followUps": [
+        "What are the hardest operational problems in microservices?",
+        "How do you handle distributed transactions across services?"
+      ]
+    },
+    {
+      "id": "q046",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "qa"
+      ],
+      "difficulty": 1,
+      "text": "Walk me through your approach to testing code.",
+      "idealPoints": [
+        "Testing pyramid: unit → integration → e2e, right balance",
+        "Test the behavior not implementation; naming conventions",
+        "Coverage as a signal, not a goal; test what matters",
+        "CI gating, flaky test handling"
+      ],
+      "followUps": [
+        "How do you decide what deserves an e2e test?",
+        "How do you deal with flaky tests?"
+      ]
+    },
+    {
+      "id": "q047",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "web"
+      ],
+      "difficulty": 2,
+      "text": "Walk me through what happens when you type a URL and press Enter.",
+      "idealPoints": [
+        "DNS resolution → TCP/TLS handshake → HTTP request",
+        "Server processing → response with headers",
+        "Browser parsing (HTML/CSS/JS) → render, layout, paint",
+        "Mention caching, CDN, and the layers of the stack"
+      ],
+      "followUps": [
+        "Where does caching kick in at each step?",
+        "What headers affect caching and security (HSTS, CSP)?"
+      ]
+    },
+    {
+      "id": "q048",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "web"
+      ],
+      "difficulty": 1,
+      "text": "What is the difference between HTTP and HTTPS, and how does TLS work at a high level?",
+      "idealPoints": [
+        "HTTPS = HTTP over TLS; encryption + authentication",
+        "TLS handshake: cert verification, key exchange, session keys",
+        "Why mixed content and cert expiry matter"
+      ],
+      "followUps": [
+        "How does a browser verify a certificate?",
+        "What is HSTS and what does it prevent?"
+      ]
+    },
+    {
+      "id": "q049",
+      "roles": [
+        "data-scientist",
+        "software-engineer"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 1,
+      "text": "Walk me through an end-to-end ML project you worked on.",
+      "idealPoints": [
+        "Problem framing + success metrics with stakeholders",
+        "Data: collection, cleaning, EDA, feature engineering",
+        "Modeling: baseline → candidate models → evaluation",
+        "Deployment, monitoring, and iteration loop"
+      ],
+      "followUps": [
+        "How did you evaluate model performance against business metrics?",
+        "What would you do differently next time?"
+      ]
+    },
+    {
+      "id": "q050",
+      "roles": [
+        "data-scientist"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 2,
+      "text": "Explain precision vs recall, and how you choose between them.",
+      "idealPoints": [
+        "Precision: of predicted positives, how many were right",
+        "Recall: of actual positives, how many were found",
+        "Tradeoff and the F1 harmonic mean; PR vs ROC curves",
+        "Domain examples: fraud (precision) vs disease screening (recall)"
+      ],
+      "followUps": [
+        "What is the area under the ROC curve and its limitation with imbalanced data?",
+        "In fraud detection, which do you prioritize and why?"
+      ]
+    },
+    {
+      "id": "q051",
+      "roles": [
+        "data-scientist"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 2,
+      "text": "How do you handle imbalanced datasets?",
+      "idealPoints": [
+        "Understand the problem: rare positives, cost of errors",
+        "Data: resampling (SMOTE), class weights, synthetic data",
+        "Modeling: use PR-AUC instead of accuracy, calibration",
+        "Framing: anomaly detection or two-stage pipelines for extreme imbalance"
+      ],
+      "followUps": [
+        "Why is accuracy a bad metric for imbalanced data?",
+        "What is SMOTE and what are its pitfalls?"
+      ]
+    },
+    {
+      "id": "q052",
+      "roles": [
+        "data-scientist"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 2,
+      "text": "Explain the bias-variance tradeoff.",
+      "idealPoints": [
+        "Bias: error from overly simple assumptions; variance: sensitivity to training data",
+        "Underfitting vs overfitting relationship",
+        "How to diagnose: train/val error gap, learning curves",
+        "Mitigations: regularization, more data, ensemble methods"
+      ],
+      "followUps": [
+        "How would you detect overfitting without a test set?",
+        "How do regularization parameters (e.g., lambda) affect bias and variance?"
+      ]
+    },
+    {
+      "id": "q053",
+      "roles": [
+        "data-scientist"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 2,
+      "text": "How does gradient descent work? What are the variants and pitfalls?",
+      "idealPoints": [
+        "Iteratively move parameters opposite the gradient to minimize loss",
+        "Learning rate: too high diverges, too low slow; scheduling",
+        "Variants: batch, SGD, mini-batch, momentum, Adam",
+        "Pitfalls: local minima, saddle points, feature scaling"
+      ],
+      "followUps": [
+        "Why is feature scaling important for gradient descent?",
+        "How does learning rate scheduling help training?"
+      ]
+    },
+    {
+      "id": "q054",
+      "roles": [
+        "data-scientist"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 3,
+      "text": "How would you build a fraud detection system for transactions?",
+      "idealPoints": [
+        "Label/ground truth issues: definition of fraud, delay in labels",
+        "Features: transaction velocity, amount anomalies, device/location signals",
+        "Model: gradient boosting + threshold tuning on PR curve",
+        "Deployment: real-time scoring, drift monitoring, human review loop"
+      ],
+      "followUps": [
+        "How do you handle concept drift in fraud patterns?",
+        "How would you measure the business impact of the model?"
+      ]
+    },
+    {
+      "id": "q055",
+      "roles": [
+        "data-scientist"
+      ],
+      "topics": [
+        "ml"
+      ],
+      "difficulty": 1,
+      "text": "What is overfitting and how do you prevent it?",
+      "idealPoints": [
+        "Model fits training noise, generalizes poorly",
+        "Prevention: more data, regularization, simpler models, early stopping, cross-validation",
+        "Diagnosis via train/test error gap"
+      ],
+      "followUps": [
+        "How does dropout help in neural networks?",
+        "What is the difference between validation and test sets?"
+      ]
+    },
+    {
+      "id": "q056",
+      "roles": [
+        "data-scientist",
+        "product-manager"
+      ],
+      "topics": [
+        "metrics"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a time you designed or analyzed an A/B test.",
+      "idealPoints": [
+        "Hypothesis + primary/secondary metrics, guardrail metrics",
+        "Sample size, randomization, duration and novelty effects",
+        "Statistical significance, practical significance, segmentation",
+        "Result → decision and lessons learned"
+      ],
+      "followUps": [
+        "What is peeking and why is it a problem?",
+        "What would you do if the test result conflicts with your intuition?"
+      ]
+    },
+    {
+      "id": "q057",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "product"
+      ],
+      "difficulty": 2,
+      "text": "How do you prioritize features when everything is urgent?",
+      "idealPoints": [
+        "Frame with user value, business impact, effort/risk",
+        "Frameworks: RICE, MoSCoW, impact/effort matrix",
+        "Bring data + stakeholder alignment to the decision",
+        "Show willingness to say no and revisit"
+      ],
+      "followUps": [
+        "How do you handle a stakeholder who disagrees with the priority?",
+        "Which framework do you actually use day-to-day and why?"
+      ]
+    },
+    {
+      "id": "q058",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "product"
+      ],
+      "difficulty": 1,
+      "text": "What is the difference between an MVP and a prototype? How do you decide what to build first?",
+      "idealPoints": [
+        "Prototype: validate desirability/feasibility, throwaway",
+        "MVP: smallest thing that delivers value and enables learning",
+        "Decision driven by the biggest risk to validate",
+        "Example walkthrough"
+      ],
+      "followUps": [
+        "What's the riskiest assumption in your current product and how would you test it?",
+        "How do you keep an MVP from becoming a prototype?"
+      ]
+    },
+    {
+      "id": "q059",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "product"
+      ],
+      "difficulty": 3,
+      "text": "Design a feature for an existing product you use often.",
+      "idealPoints": [
+        "Choose product, define target user and problem with evidence",
+        "Explore solutions, pick one with tradeoffs, define scope",
+        "Define success metrics and rollout plan",
+        "Show user empathy and prioritization discipline"
+      ],
+      "followUps": [
+        "What would you build in the first version vs later?",
+        "How would you measure whether it worked?"
+      ]
+    },
+    {
+      "id": "q060",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "product"
+      ],
+      "difficulty": 1,
+      "text": "How do you measure product success?",
+      "idealPoints": [
+        "North star metric tied to value delivered",
+        "Input vs output metrics; leading vs lagging",
+        "Examples: activation, retention, engagement, revenue",
+        "Balance: don't optimize a single metric at the expense of health"
+      ],
+      "followUps": [
+        "What's your north star for an e-commerce app and why?",
+        "Which counter-metrics would you watch?"
+      ]
+    },
+    {
+      "id": "q061",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a product you improved. How did you decide what to change?",
+      "idealPoints": [
+        "Describe the product and the problem with user evidence",
+        "Explain the process: research → prioritization → build → measure",
+        "Quantify the impact",
+        "Reflect on what you'd do differently"
+      ],
+      "followUps": [
+        "Who did you involve in the decision?",
+        "What did you learn from the users during research?"
+      ]
+    },
+    {
+      "id": "q062",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Walk me through a launch you led. What did you own?",
+      "idealPoints": [
+        "Scope: who, what, when; cross-functional coordination",
+        "Risks and rollback plan; go/no-go criteria",
+        "Launch execution + post-launch metrics and iteration",
+        "Show leadership and communication"
+      ],
+      "followUps": [
+        "What went wrong during that launch?",
+        "How did you coordinate engineering, design, and marketing?"
+      ]
+    },
+    {
+      "id": "q063",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "metrics"
+      ],
+      "difficulty": 2,
+      "text": "What metrics would you track for a subscription product? Build a metric tree.",
+      "idealPoints": [
+        "Acquisition → activation → engagement → retention → revenue → referral",
+        "Key ratios: conversion, churn, LTV, CAC, MRR/ARR, expansion revenue",
+        "Explain leading indicators and guardrails",
+        "Tie each metric to a decision it informs"
+      ],
+      "followUps": [
+        "What is the most important metric and why?",
+        "How would you reduce churn?"
+      ]
+    },
+    {
+      "id": "q064",
+      "roles": [
+        "product-manager"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "How do you handle a stakeholder who blocks your initiative?",
+      "idealPoints": [
+        "Understand their concerns and incentives first",
+        "Find data and allies; propose a smaller test",
+        "Escalate transparently if needed; build trust over time",
+        "Example from experience"
+      ],
+      "followUps": [
+        "When would you push back on a stakeholder?",
+        "How do you rebuild a relationship after disagreement?"
+      ]
+    },
+    {
+      "id": "q065",
+      "roles": [
+        "devops",
+        "software-engineer"
+      ],
+      "topics": [
+        "devops"
+      ],
+      "difficulty": 1,
+      "text": "Explain CI/CD. What are the core components of a pipeline?",
+      "idealPoints": [
+        "CI: build + test on every merge; fast feedback",
+        "CD: automated deploy through environments with gates",
+        "Stages: lint → unit → build artifact → staging → canary → prod",
+        "Quality gates, artifact promotion, rollback"
+      ],
+      "followUps": [
+        "How do you handle secrets in CI/CD?",
+        "What's the difference between continuous delivery and continuous deployment?"
+      ]
+    },
+    {
+      "id": "q066",
+      "roles": [
+        "devops",
+        "software-engineer"
+      ],
+      "topics": [
+        "devops"
+      ],
+      "difficulty": 3,
+      "text": "How does Kubernetes schedule pods? Explain the scheduler's decision process.",
+      "idealPoints": [
+        "Scheduling = binding pods to nodes via kube-scheduler",
+        "Filtering (feasibility: resources, taints) then scoring (spread, affinity)",
+        "QoS classes and eviction under pressure",
+        "Hand-rolled scheduling vs cluster autoscaling"
+      ],
+      "followUps": [
+        "What is the difference between limits and requests?",
+        "What happens when a node goes down?"
+      ]
+    },
+    {
+      "id": "q067",
+      "roles": [
+        "devops"
+      ],
+      "topics": [
+        "devops"
+      ],
+      "difficulty": 2,
+      "text": "Explain blue-green vs canary deployments.",
+      "idealPoints": [
+        "Blue-green: two identical environments, instant switch, easy rollback",
+        "Canary: gradual % traffic shift with monitoring gates",
+        "Tradeoffs: cost, complexity, state/db compatibility",
+        "When each fits"
+      ],
+      "followUps": [
+        "What database migration issues do you hit with blue-green?",
+        "What metrics would gate a canary promotion?"
+      ]
+    },
+    {
+      "id": "q068",
+      "roles": [
+        "devops",
+        "software-engineer"
+      ],
+      "topics": [
+        "sre"
+      ],
+      "difficulty": 2,
+      "text": "You get paged for a service outage at 3 AM. Walk me through your process.",
+      "idealPoints": [
+        "Stabilize first: mitigate (rollback, scale, failover) before deep diagnosis",
+        "Communicate status to stakeholders; maintain a timeline",
+        "Post-incident: blameless postmortem, action items, prevention",
+        "Show calm prioritization"
+      ],
+      "followUps": [
+        "How do you decide to roll back vs roll forward?",
+        "What makes a good postmortem?"
+      ]
+    },
+    {
+      "id": "q069",
+      "roles": [
+        "devops",
+        "software-engineer"
+      ],
+      "topics": [
+        "sre"
+      ],
+      "difficulty": 2,
+      "text": "How do you debug a slow API in production?",
+      "idealPoints": [
+        "Reproduce and instrument: APM traces, metrics, logs",
+        "Check tiers: client → network → LB → app → DB → third-party",
+        "Common causes: N+1 queries, missing index, lock contention, GC",
+        "Measure before and after the fix"
+      ],
+      "followUps": [
+        "What if the slowness is intermittent?",
+        "How do you add tracing to a legacy system?"
+      ]
+    },
+    {
+      "id": "q070",
+      "roles": [
+        "devops"
+      ],
+      "topics": [
+        "devops"
+      ],
+      "difficulty": 2,
+      "text": "Design monitoring and alerting for a new microservice.",
+      "idealPoints": [
+        "RED vs USE metrics: rate, errors, duration / utilization, saturation",
+        "Logs, metrics, and traces; correlation via request ID",
+        "Alert on symptoms with runbooks, not noise; alert fatigue",
+        "SLIs → SLOs → error budgets"
+      ],
+      "followUps": [
+        "What is an error budget and how do you use it?",
+        "How do you avoid alert fatigue?"
+      ]
+    },
+    {
+      "id": "q071",
+      "roles": [
+        "qa",
+        "software-engineer"
+      ],
+      "topics": [
+        "qa"
+      ],
+      "difficulty": 1,
+      "text": "How do you decide what to automate vs test manually?",
+      "idealPoints": [
+        "Automate stable, high-value, repeatable flows; ROI analysis",
+        "Manual for exploratory, usability, visual, one-off scenarios",
+        "Pyramid: many unit, fewer integration, fewest e2e",
+        "Flakiness and maintenance cost considerations"
+      ],
+      "followUps": [
+        "How do you sell automation investment to management?",
+        "What's your approach to keeping UI tests stable?"
+      ]
+    },
+    {
+      "id": "q072",
+      "roles": [
+        "qa",
+        "software-engineer"
+      ],
+      "topics": [
+        "qa"
+      ],
+      "difficulty": 2,
+      "text": "Design a test plan for a checkout page. What would you cover?",
+      "idealPoints": [
+        "Functional: happy path, validation, payment gateways, coupons, errors",
+        "Edge: currency, tax, failed payments, timeout, double-click prevention",
+        "Cross-browser, mobile, accessibility",
+        "Priority, risk-based approach, and automation split"
+      ],
+      "followUps": [
+        "How do you test payment failure handling?",
+        "What data would you need to prepare?"
+      ]
+    },
+    {
+      "id": "q073",
+      "roles": [
+        "qa"
+      ],
+      "topics": [
+        "qa"
+      ],
+      "difficulty": 1,
+      "text": "Explain the testing pyramid.",
+      "idealPoints": [
+        "Base: fast, numerous unit tests",
+        "Middle: integration tests for module interactions",
+        "Top: few, slow, brittle e2e tests",
+        "Why inverted pyramids are a smell"
+      ],
+      "followUps": [
+        "Where would contract testing fit in?",
+        "Why are e2e tests slow and brittle?"
+      ]
+    },
+    {
+      "id": "q074",
+      "roles": [
+        "qa"
+      ],
+      "topics": [
+        "qa"
+      ],
+      "difficulty": 1,
+      "text": "How do you write a good bug report?",
+      "idealPoints": [
+        "Reproducible steps, environment, expected vs actual",
+        "Severity/priority, attachments/logs, affected versions",
+        "Clear title; avoid vague 'it doesn't work'",
+        "Communication with devs for triage"
+      ],
+      "followUps": [
+        "What makes a bug unreproducible and what do you do?",
+        "How do you prioritize which bugs to fix first?"
+      ]
+    },
+    {
+      "id": "q075",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "behavioral"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about the hardest technical problem you've solved.",
+      "idealPoints": [
+        "Set up the context and why it was hard",
+        "Walk through your investigation and the aha moment",
+        "Explain the solution and its impact with numbers",
+        "Show resilience and depth"
+      ],
+      "followUps": [
+        "What other approaches did you try first?",
+        "How long did it take and how did you keep going?"
+      ]
+    },
+    {
+      "id": "q076",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "system-design"
+      ],
+      "difficulty": 2,
+      "text": "Design a news feed for a social app. How do you balance freshness and relevance?",
+      "idealPoints": [
+        "Fan-out on write vs on read; hybrid approaches",
+        "Ranking signals: recency, affinity, engagement",
+        "Storage and caching: precomputed feeds, pagination with cursors",
+        "Scaling: sharding, caching layers, degradation"
+      ],
+      "followUps": [
+        "How do you handle the celebrity (super-connector) problem?",
+        "What signals would you use to rank posts?"
+      ]
+    },
+    {
+      "id": "q077",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "databases"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a time you optimized a slow database query or service.",
+      "idealPoints": [
+        "Measure first: explain plan, profiling, metrics",
+        "Identify root cause: missing index, N+1, lock, data shape",
+        "Apply fix, verify with numbers, monitor for regression",
+        "Follow engineering rigor with before/after evidence"
+      ],
+      "followUps": [
+        "How did you prove the improvement?",
+        "What would you do if adding an index wasn't enough?"
+      ]
+    },
+    {
+      "id": "q078",
+      "roles": [
+        "software-engineer",
+        "backend"
+      ],
+      "topics": [
+        "backend"
+      ],
+      "difficulty": 2,
+      "text": "Tell me about a time you worked with a cross-functional team to ship something.",
+      "idealPoints": [
+        "Describe your role and the coordination involved",
+        "Show communication and expectation management",
+        "Highlight the shipped outcome and any conflict handled",
+        "Keep it concise with a clear narrative arc"
+      ],
+      "followUps": [
+        "How did you handle misaligned priorities between teams?",
+        "What would you improve about how you collaborated?"
+      ]
+    }
   ]
 }

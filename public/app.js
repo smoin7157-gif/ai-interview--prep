@@ -1,6 +1,7 @@
 /* ============================================================
    InterviewIQ — frontend app
-   Zero-dependency SPA: views, API client, voice input, charts
+   Zero-dependency SPA: auth, role-based workspaces, views,
+   API client, voice input, charts
    ============================================================ */
 (() => {
   'use strict';
@@ -9,10 +10,12 @@
   const app = document.getElementById('app');
 
   const state = {
+    user: null,       // { id, username, role }
     sessionId: null,
     profile: null,
     busy: false,
     interviewing: false,
+    meta: null,       // cached role/company taxonomy
   };
 
   // ------------------------------------------------------------
@@ -50,6 +53,8 @@
     return 'low';
   }
 
+  const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '—');
+
   const loading = (label = 'Loading…') =>
     `<div class="loading"><div class="spinner"></div><div>${esc(label)}</div></div>`;
 
@@ -62,77 +67,272 @@
       ...opts,
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+    if (!res.ok) {
+      if (res.status === 401 && !path.startsWith('/auth')) {
+        state.user = null;
+        document.body.dataset.role = 'guest';
+        renderNav();
+        location.hash = '#/auth';
+      }
+      throw new Error(data.error || `Request failed (${res.status})`);
+    }
     return data;
   }
 
   // ------------------------------------------------------------
-  // Router
+  // Auth helpers
+  // ------------------------------------------------------------
+  const isTeacher = () => state.user && state.user.role === 'teacher';
+
+  function applyRole() {
+    document.body.dataset.role = state.user ? state.user.role : 'guest';
+  }
+
+  async function loadMeta() {
+    if (state.meta) return state.meta;
+    try {
+      state.meta = await api('/meta/roles');
+    } catch {
+      state.meta = { roles: [], companies: [] };
+    }
+    return state.meta;
+  }
+
+  // ------------------------------------------------------------
+  // Top bar (role-aware)
+  // ------------------------------------------------------------
+  function renderNav() {
+    const nav = $('#topnav');
+    const right = $('#topbarRight');
+    if (!state.user) {
+      nav.innerHTML = '';
+      right.innerHTML = `<a href="#/auth" class="nav-link" data-route="auth">Log in / Sign up</a>`;
+      return;
+    }
+    const links = isTeacher()
+      ? [['home', '📊 Dashboard'], ['bank', '📚 Question bank'], ['assign', '🎯 Assign interview']]
+      : [['home', '🏠 Home'], ['setup', '🚀 New interview'], ['mine', '📥 My interviews'], ['history', '📈 History']];
+    nav.innerHTML = links.map(([r, l]) => `<a href="#/${r}" class="nav-link" data-route="${r}">${l}</a>`).join('');
+    const icon = isTeacher() ? '👩🏫' : '🧑‍🎓';
+    right.innerHTML = `
+      <span class="user-chip"><span class="uc-icon">${icon}</span><span class="uc-name">${esc(state.user.username)}</span></span>
+      <button class="nav-link logout-btn" id="logoutBtn" title="Log out">Log out</button>`;
+    $('#logoutBtn').addEventListener('click', async () => {
+      try { await api('/auth/logout', { method: 'POST' }); } catch {}
+      state.user = null;
+      applyRole();
+      renderNav();
+      location.hash = '#/auth';
+    });
+  }
+
+  function setNavActive(route) {
+    document.querySelectorAll('#topnav .nav-link').forEach((a) => {
+      a.classList.toggle('active', a.dataset.route === route);
+    });
+  }
+
+  // ------------------------------------------------------------
+  // Router (role-guarded)
   // ------------------------------------------------------------
   const routes = {
+    auth: renderAuth,
     home: renderHome,
     setup: renderSetup,
     interview: renderInterview,
     report: renderReport,
     history: renderHistory,
+    mine: renderMine,
+    bank: renderBank,
+    assign: renderAssign,
   };
 
   function navigate() {
     const hash = location.hash.replace(/^#\/?/, '');
     const [route, param] = hash.split('/');
-    const fn = routes[route] || renderHome;
-    setNavActive(route);
-    fn(param);
-  }
 
-  function setNavActive(route) {
-    document.querySelectorAll('.nav-link').forEach((a) => {
-      a.classList.toggle('active', a.dataset.route === route);
-    });
+    if (!state.user) {
+      setNavActive('auth');
+      if (route !== 'auth') { location.hash = '#/auth'; return; }
+      renderAuth();
+      return;
+    }
+
+    const allowed = isTeacher() ? ['home', 'bank', 'assign', 'report'] : ['home', 'setup', 'interview', 'report', 'history', 'mine'];
+    if (!allowed.includes(route)) { location.hash = '#/home'; return; }
+
+    setNavActive(route);
+    (routes[route] || renderHome)(param);
   }
 
   window.addEventListener('hashchange', navigate);
 
   // ------------------------------------------------------------
-  // HOME
+  // AUTH
+  // ------------------------------------------------------------
+  function renderAuth() {
+    app.innerHTML = `
+      <section class="view auth-wrap">
+        <div class="auth-card card">
+          <div class="auth-head">
+            <div class="auth-logo">🎯</div>
+            <h1>Interview<span class="grad-text">IQ</span></h1>
+            <p>AI mock interviews that coach you —<br/>or help you coach others.</p>
+          </div>
+          <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Log in</button>
+            <button class="auth-tab" data-tab="register">Create account</button>
+          </div>
+          <div class="role-doors" id="roleDoors" style="display:none;">
+            <button type="button" class="role-door teacher-door" data-role="teacher">
+              <span class="rd-icon">👩‍🏫</span>
+              <span class="rd-txt"><span class="rd-title">I'm a teacher</span><span class="rd-sub">Build the question bank &amp; assign interviews</span></span>
+            </button>
+            <button type="button" class="role-door student-door active" data-role="student">
+              <span class="rd-icon">🧑‍🎓</span>
+              <span class="rd-txt"><span class="rd-title">I'm a student</span><span class="rd-sub">Take mock interviews &amp; track progress</span></span>
+            </button>
+          </div>
+          <form id="authForm" autocomplete="on">
+            <div class="field">
+              <label>Username</label>
+              <input class="input" id="authUser" name="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]+" placeholder="e.g. priya_sharma" required />
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input class="input" id="authPass" name="password" type="password" minlength="6" placeholder="••••••••" required />
+            </div>
+            <button class="btn auth-submit" id="authSubmit" type="submit">Log in →</button>
+            <div class="auth-error" id="authError"></div>
+          </form>
+        </div>
+      </section>`;
+
+    let mode = 'login';
+    let role = 'student';
+
+    document.querySelectorAll('.auth-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        mode = tab.dataset.tab;
+        document.querySelectorAll('.auth-tab').forEach((t) => t.classList.toggle('active', t === tab));
+        $('#roleDoors').style.display = mode === 'register' ? '' : 'none';
+        $('#authSubmit').textContent = mode === 'login' ? 'Log in →' : 'Create account →';
+      });
+    });
+    document.querySelectorAll('.role-door').forEach((door) => {
+      door.addEventListener('click', () => {
+        role = door.dataset.role;
+        document.querySelectorAll('.role-door').forEach((d) => d.classList.toggle('active', d === door));
+      });
+    });
+
+    $('#authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = $('#authSubmit');
+      const err = $('#authError');
+      err.textContent = '';
+      btn.disabled = true;
+      btn.textContent = mode === 'login' ? 'Logging in…' : 'Creating account…';
+      try {
+        const body = { username: $('#authUser').value.trim(), password: $('#authPass').value };
+        const res = await api(`/auth/${mode}`, { method: 'POST', body: JSON.stringify(mode === 'login' ? body : { ...body, role }) });
+        state.user = res.user;
+        applyRole();
+        renderNav();
+        location.hash = '#/home';
+      } catch (ex) {
+        err.textContent = ex.message;
+        btn.disabled = false;
+        btn.textContent = mode === 'login' ? 'Log in →' : 'Create account →';
+      }
+    });
+  }
+
+  // ------------------------------------------------------------
+  // HOME (role-aware landing)
   // ------------------------------------------------------------
   async function renderHome() {
+    if (isTeacher()) return renderTeacherHome();
+    return renderStudentHome();
+  }
+
+  async function renderStudentHome() {
+    const name = state.user ? `, ${esc(state.user.username)}` : '';
     app.innerHTML = `
       <section class="hero view">
         <span class="eyebrow">✦ Mock interview co-pilot</span>
-        <h1>Land your next role with<br/><span class="grad-text">a personalized AI interviewer</span></h1>
-        <p>Upload your resume and a job description. Our RAG engine builds a question bank for your exact role, an adaptive AI interviewer quizzes you, ML scores your answers on STAR &amp; structure, and reports track your improvement across sessions.</p>
+        <h1>Welcome back${name} —<br/><span class="grad-text">your AI interviewer is ready</span></h1>
+        <p>Upload a resume and a job description. The RAG engine builds a question bank for your exact role, an adaptive AI interviewer quizzes you, ML scores your answers, and reports track your improvement — plus any interviews your teacher assigns show up under <strong>My interviews</strong>.</p>
         <div class="hero-actions">
           <button class="btn" onclick="location.hash='#/setup'">🚀 Start an interview</button>
-          <button class="btn btn-ghost" onclick="location.hash='#/history'">📈 View history</button>
+          <button class="btn btn-ghost" onclick="location.hash='#/mine'">📥 My interviews</button>
+          <button class="btn btn-ghost" onclick="location.hash='#/history'">📈 History</button>
         </div>
       </section>
       <section class="feature-grid view" id="features">
         <div class="feature"><div class="icon">🧠</div><h3>RAG question bank</h3><p>Retrieves the most relevant questions for your role, skills, and target company from a curated knowledge base.</p></div>
-        <div class="feature"><div class="icon">🤖</div><h3>Adaptive interviewer</h3><p>An LLM co-pilot that asks questions, fires smart follow-ups, and adjusts difficulty to your answers.</p></div>
-        <div class="feature"><div class="icon">📊</div><h3>ML answer scoring</h3><p>A lightweight classifier grades STAR structure, filler words, relevance, and quantified evidence — not just an LLM opinion.</p></div>
+        <div class="feature"><div class="icon">🤖</div><h3>Adaptive interviewer</h3><p>An AI co-pilot that asks questions, fires smart follow-ups, and adjusts difficulty to your answers.</p></div>
+        <div class="feature"><div class="icon">📊</div><h3>ML answer scoring</h3><p>A classifier grades STAR structure, filler words, relevance, and quantified evidence — not just an LLM opinion.</p></div>
         <div class="feature"><div class="icon">🎤</div><h3>Voice answers</h3><p>Answer out loud using your browser's microphone — speech-to-text does the typing.</p></div>
         <div class="feature"><div class="icon">📋</div><h3>Post-interview report</h3><p>Strengths, gaps, and concrete resources — with multi-session tracking that charts your improvement.</p></div>
-        <div class="feature"><div class="icon">🔒</div><h3>100% local-first</h3><p>Everything runs on your machine. Sessions are stored in a local SQLite database; no account, no cloud sync.</p></div>
+        <div class="feature"><div class="icon">🎓</div><h3>Teacher-assigned</h3><p>Pick up interviews your teacher created for you, right from your dashboard.</p></div>
       </section>
       <div class="home-stats view" id="home-stats">
         <div class="stat"><div class="num grad-text" id="st-q">–</div><div class="lbl">questions</div></div>
         <div class="stat"><div class="num grad-text" id="st-r">–</div><div class="lbl">roles</div></div>
         <div class="stat"><div class="num grad-text" id="st-t">–</div><div class="lbl">topics</div></div>
-        <div class="stat"><div class="num grad-text" id="st-s">–</div><div class="lbl">sessions</div></div>
+        <div class="stat"><div class="num grad-text" id="st-s">–</div><div class="lbl">my sessions</div></div>
       </div>`;
-    api('/health').then((h) => {
+    const [h, mine] = await Promise.all([api('/health').catch(() => null), api('/sessions').catch(() => ({ sessions: [] }))]);
+    if (h) {
       $('#st-q').textContent = h.kb.questions;
       $('#st-r').textContent = h.kb.roles;
       $('#st-t').textContent = h.kb.topics;
-      $('#st-s').textContent = h.sessions;
-    }).catch(() => {});
+    }
+    $('#st-s').textContent = mine.sessions.length;
+  }
+
+  async function renderTeacherHome() {
+    app.innerHTML = `
+      <section class="view">
+        <div class="teacher-hero">
+          <span class="eyebrow">✦ Teacher console</span>
+          <h1 class="section-title">Coach your students to<br/><span class="grad-text">interview-ready</span></h1>
+          <p class="section-sub">Shape the question bank your students are drilled on, then assign focused mock interviews and watch their scores land.</p>
+        </div>
+        <div class="t-stats">
+          <div class="stat"><div class="num grad-text" id="tq">–</div><div class="lbl">questions in bank</div></div>
+          <div class="stat"><div class="num grad-text" id="ts">–</div><div class="lbl">students</div></div>
+          <div class="stat"><div class="num grad-text" id="tt">–</div><div class="lbl">sessions started</div></div>
+        </div>
+        <div class="t-cards">
+          <button class="card t-card" onclick="location.hash='#/bank'">
+            <span class="t-card-icon">📚</span>
+            <span class="t-card-body"><span class="t-card-title">Manage question bank</span><span class="t-card-sub">Add, edit, and remove the questions used by every interview.</span></span>
+            <span class="t-card-arrow">→</span>
+          </button>
+          <button class="card t-card" onclick="location.hash='#/assign'">
+            <span class="t-card-icon">🎯</span>
+            <span class="t-card-body"><span class="t-card-title">Assign an interview</span><span class="t-card-sub">Create a focused mock interview for any of your students.</span></span>
+            <span class="t-card-arrow">→</span>
+          </button>
+        </div>
+      </section>`;
+    const [h, students, sessions] = await Promise.all([
+      api('/health').catch(() => null),
+      api('/teacher/students').catch(() => ({ students: [] })),
+      api('/sessions').catch(() => ({ sessions: [] })),
+    ]);
+    $('#tq').textContent = h ? h.kb.questions : '–';
+    $('#ts').textContent = students.students.length;
+    $('#tt').textContent = sessions.sessions.length;
   }
 
   // ------------------------------------------------------------
-  // SETUP
+  // SETUP (student)
   // ------------------------------------------------------------
   async function renderSetup() {
+    await loadMeta();
     app.innerHTML = `
       <section class="view">
         <h2 class="section-title">New mock interview</h2>
@@ -200,11 +400,8 @@
     const statusEl = $('#setupStatus');
     let resumeText = '';
 
-    // Load role/company options
-    api('/meta/roles').then((m) => {
-      $('#roleSelect').insertAdjacentHTML('beforeend', m.roles.filter((r) => r.id !== 'general').map((r) => `<option value="${r.id}">${esc(r.label)}</option>`).join(''));
-      $('#companySelect').insertAdjacentHTML('beforeend', m.companies.map((c) => `<option value="${c.id}">${esc(c.label)}</option>`).join(''));
-    }).catch(() => {});
+    $('#roleSelect').insertAdjacentHTML('beforeend', state.meta.roles.filter((r) => r.id !== 'general').map((r) => `<option value="${r.id}">${esc(r.label)}</option>`).join(''));
+    $('#companySelect').insertAdjacentHTML('beforeend', state.meta.companies.map((c) => `<option value="${c.id}">${esc(c.label)}</option>`).join(''));
 
     $('#qCount').addEventListener('input', (e) => { $('#qCountVal').textContent = e.target.value; });
 
@@ -224,7 +421,6 @@
         resumeText = res.text;
         $('#fileChip').innerHTML = `<div class="file-chip"><span>✅</span><span class="fc-name">${esc(res.fileName)}</span><span class="fc-meta">${res.chars} chars extracted</span></div>`;
         statusEl.textContent = '';
-        if (!jdInput.value.trim()) jdInput.value = '';
         detectProfile();
       } catch (err) {
         statusEl.textContent = '';
@@ -320,7 +516,7 @@
             <div class="avatar">🤖</div>
             <div>
               <div class="ih-title">Live mock interview</div>
-              <div class="ih-sub">${esc(session.profile.roleLabel || 'General')}${session.company ? ' · ' + esc(session.profile.companyLabel || session.company) : ''}</div>
+              <div class="ih-sub">${esc(session.profile.roleLabel || 'General')}${session.company ? ' · ' + esc(session.profile.companyLabel || session.company) : ''}${session.assignedBy ? ' · assigned by ' + esc(session.assignedByUsername || 'your teacher') : ''}</div>
             </div>
           </div>
           <div class="progress-wrap">
@@ -349,7 +545,7 @@
     const micBtn = $('#micBtn');
     const endBtn = $('#endBtn');
 
-    const apiStatus = await api('/health');
+    const apiStatus = await api('/health').catch(() => ({}));
     $('#engineTag').textContent = apiStatus.llm ? 'LLM engine: ' + apiStatus.model : 'Offline engine (add OpenRouter key in .env for LLM feedback)';
 
     if (session.status === 'completed') {
@@ -369,6 +565,11 @@
       }
     }
     updateProgress(turns, total);
+
+    // Difficulty meter
+    const diff = session.state?.difficulty || 2;
+    $('#diffSegs').innerHTML = [1, 2, 3].map((i) => `<span class="diff-seg ${i <= diff ? 'on' : ''}"></span>`).join('');
+    $('#diffLabel').textContent = ['', 'Warm-up', 'Steady', 'Stretch'][diff] || '';
 
     // Auto-scroll
     chat.scrollTop = chat.scrollHeight;
@@ -543,16 +744,18 @@
     const questionTurns = turns.filter((t) => t.kind === 'question' || t.kind === 'followup');
     const answers = turns.filter((t) => t.kind === 'answer');
 
-    // improvement data: last 10 completed sessions (history is newest-first)
-    const history = await api('/sessions');
-    const completed = history.sessions.filter((s) => s.status === 'completed' && s.totalScore != null).slice(0, 10).reverse();
+    // improvement data: last 10 completed sessions for this owner (history is newest-first)
+    const history = await api('/sessions').catch(() => ({ sessions: [] }));
+    const completed = history.sessions
+      .filter((s) => s.status === 'completed' && s.totalScore != null && (!session.ownerId || s.ownerId === session.ownerId))
+      .slice(0, 10).reverse();
 
     app.innerHTML = `
       <section class="view">
         <div class="report-hero">
           <span class="eyebrow">📋 Post-interview report</span>
           <h2 class="section-title">${esc(session.profile.roleLabel || 'Interview')}${session.company ? ' at ' + esc(session.profile.companyLabel || '') : ''}</h2>
-          <div class="muted" style="font-size:13.5px;">${new Date(session.completedAt || session.createdAt).toLocaleString()} · ${answers.length} answers</div>
+          <div class="muted" style="font-size:13.5px;">${fmtDate(session.completedAt || session.createdAt)} · ${answers.length} answers${session.assignedBy ? ' · assigned by ' + esc(session.assignedByUsername || 'teacher') : ''}</div>
           <div class="gauge-wrap" style="margin-top:26px;">
             <div class="gauge">
               <svg width="190" height="190" viewBox="0 0 190 190">
@@ -736,7 +939,7 @@
   }
 
   // ------------------------------------------------------------
-  // HISTORY
+  // HISTORY (student)
   // ------------------------------------------------------------
   async function renderHistory() {
     app.innerHTML = loading('Loading your sessions…');
@@ -764,9 +967,9 @@
             <tbody>
               ${sessions.map((s) => `
                 <tr onclick="location.hash='#/report/${s.id}'">
-                  <td>${new Date(s.createdAt).toLocaleString()}</td>
-                  <td>${esc(s.role || 'general')}</td>
-                  <td>${esc(s.company || '—')}</td>
+                  <td>${fmtDate(s.createdAt)}</td>
+                  <td>${esc(s.roleLabel || s.role || 'general')}${s.assignedBy ? ' <span class="pill" style="font-size:10px;">📥 assigned</span>' : ''}</td>
+                  <td>${esc(s.companyLabel || s.company || '—')}</td>
                   <td>${s.questionCount ?? '–'}</td>
                   <td><span class="score-badge ${scoreClass(s.totalScore)}">${s.totalScore != null ? s.totalScore + '/100' : '–'}</span></td>
                   <td><span class="pill">${s.status === 'completed' ? '✅ completed' : '⏳ in progress'}</span></td>
@@ -778,8 +981,347 @@
   }
 
   // ------------------------------------------------------------
+  // MY INTERVIEWS (student — teacher-assigned)
+  // ------------------------------------------------------------
+  async function renderMine() {
+    app.innerHTML = loading('Loading your assigned interviews…');
+    const res = await api('/sessions').catch(() => ({ sessions: [] }));
+    const assigned = res.sessions.filter((s) => s.assignedBy);
+
+    if (!assigned.length) {
+      app.innerHTML = `
+        <section class="view empty-state">
+          <div class="e-icon">📥</div>
+          <h3>No assigned interviews yet</h3>
+          <p>When your teacher assigns you a mock interview, it will show up here ready to take.</p>
+          <button class="btn" onclick="location.hash='#/setup'">🎯 Start your own interview</button>
+        </section>`;
+      return;
+    }
+
+    app.innerHTML = `
+      <section class="view">
+        <h2 class="section-title">My interviews</h2>
+        <p class="section-sub">Mock interviews your teacher created for you.</p>
+        <div class="mine-grid">
+          ${assigned.map((s) => `
+            <div class="card mine-card" onclick="location.hash='#/${s.status === 'completed' ? 'report' : 'interview'}/${s.id}'">
+              <div class="mc-top">
+                <div class="mc-role">${esc(s.roleLabel || s.role || 'General')}</div>
+                <span class="score-badge ${scoreClass(s.totalScore)}">${s.totalScore != null ? s.totalScore + '/100' : '—'}</span>
+              </div>
+              <div class="mc-company">${s.companyLabel ? '🏢 ' + esc(s.companyLabel) : '📋 General interview'}</div>
+              <div class="mc-meta">${s.questionCount ?? '–'} questions · assigned by <strong>${esc(s.assignedByUsername || 'teacher')}</strong></div>
+              <div class="mc-foot">
+                <span class="pill">${s.status === 'completed' ? '✅ completed' : '⏳ in progress'}</span>
+                <span class="mc-cta">${s.status === 'completed' ? 'View report →' : 'Continue →'}</span>
+              </div>
+            </div>`).join('')}
+        </div>
+      </section>`;
+  }
+
+  // ------------------------------------------------------------
+  // QUESTION BANK (teacher)
+  // ------------------------------------------------------------
+  async function renderBank() {
+    app.innerHTML = loading('Loading the question bank…');
+    const data = await api('/questions').catch(() => null);
+    if (!data) return;
+    const roleName = Object.fromEntries(data.roles.map((r) => [r.id, r.label]));
+    const topicName = Object.fromEntries(data.topics.map((t) => [t.id, t.label]));
+
+    const draw = (list) => {
+      $('#qList').innerHTML = list.length ? list.map((q) => `
+        <div class="card q-card" data-id="${esc(q.id)}">
+          <div class="qc-head">
+            <div class="qc-text">${esc(q.text)}</div>
+            <div class="qc-actions">
+              <button class="icon-btn" data-act="edit" title="Edit">✏️</button>
+              <button class="icon-btn" data-act="del" title="Delete">🗑️</button>
+            </div>
+          </div>
+          <div class="qc-tags">
+            ${(q.roles || []).map((r) => `<span class="pill role-pill">${esc(roleName[r] || r)}</span>`).join('')}
+            ${(q.topics || []).map((t) => `<span class="pill">${esc(topicName[t] || t)}</span>`).join('')}
+            <span class="pill diff-pill">${'●'.repeat(q.difficulty || 1)}${'○'.repeat(Math.max(0, 3 - (q.difficulty || 1)))}</span>
+          </div>
+          ${(q.idealPoints || []).length ? `<div class="qc-points">💡 ${(q.idealPoints || []).slice(0, 2).map((p) => esc(p)).join(' · ')}${(q.idealPoints || []).length > 2 ? ' …' : ''}</div>` : ''}
+        </div>`).join('') : `<div class="empty-state"><div class="e-icon">🔍</div><h3>No questions match</h3><p>Try a different search or add a new question.</p></div>`;
+    };
+
+    app.innerHTML = `
+      <section class="view">
+        <div class="view-head">
+          <div>
+            <span class="eyebrow">✦ Teacher console</span>
+            <h2 class="section-title">Question bank</h2>
+            <p class="section-sub" id="bankCount">${data.questions.length} questions · powering every interview</p>
+          </div>
+          <button class="btn" id="addQBtn">＋ Add question</button>
+        </div>
+        <div class="bank-toolbar">
+          <input class="input" id="qSearch" placeholder="Search questions…" />
+          <select class="input bank-filter" id="qRoleFilter"><option value="">All roles</option>${data.roles.map((r) => `<option value="${r.id}">${esc(r.label)}</option>`).join('')}</select>
+        </div>
+        <div class="q-list" id="qList"></div>
+
+        <div class="card q-form" id="qForm" hidden>
+          <h3 id="qFormTitle">Add a question</h3>
+          <div class="field">
+            <label>Question text</label>
+            <textarea class="textarea" id="qfText" placeholder="e.g. Walk me through a time you had to debug a production outage."></textarea>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>Roles</label>
+              <div class="chip-row" id="qfRoles"></div>
+            </div>
+            <div class="field">
+              <label>Topics</label>
+              <div class="chip-row" id="qfTopics"></div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>Difficulty</label>
+              <select class="input" id="qfDiff">
+                <option value="1">1 — Warm-up</option>
+                <option value="2" selected>2 — Core</option>
+                <option value="3">3 — Stretch</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button class="btn btn-ghost" id="qfCancel" type="button">Cancel</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Ideal points <span class="hint">one per line — what a strong answer includes</span></label>
+            <textarea class="textarea qf-short" id="qfIdeal" placeholder="1-minute structured intro with numbers&#10;Mention 2-3 achievements, not just duties"></textarea>
+          </div>
+          <div class="field">
+            <label>Follow-ups <span class="hint">one per line — probes for weak answers</span></label>
+            <textarea class="textarea qf-short" id="qfFollow" placeholder="Walk me through the most relevant project in more detail."></textarea>
+          </div>
+          <div class="setup-actions">
+            <button class="btn" id="qfSave">Save question</button>
+            <span class="faint" id="qfStatus"></span>
+          </div>
+        </div>
+      </section>`;
+
+    draw(data.questions);
+
+    let editingId = null;
+
+    // Chip builder for roles/topics
+    const chipRow = (list, sel, wrapId) => {
+      $(wrapId).innerHTML = list.map(([id, label]) =>
+        `<label class="chip ${sel.includes(id) ? 'on' : ''}"><input type="checkbox" value="${esc(id)}" ${sel.includes(id) ? 'checked' : ''} hidden /><span>${esc(label)}</span></label>`
+      ).join('');
+      $(wrapId).querySelectorAll('input').forEach((cb) => cb.addEventListener('change', () => cb.closest('.chip').classList.toggle('on', cb.checked)));
+    };
+    const selRoles = () => [...$('#qfRoles').querySelectorAll('input:checked')].map((c) => c.value);
+    const selTopics = () => [...$('#qfTopics').querySelectorAll('input:checked')].map((c) => c.value);
+    const newLines = (id) => $('#qf' + id).value.split('\n').map((s) => s.trim()).filter(Boolean);
+
+    const openForm = (q) => {
+      editingId = q ? q.id : null;
+      $('#qForm').hidden = false;
+      $('#qFormTitle').textContent = q ? 'Edit question' : 'Add a question';
+      $('#qfText').value = q ? q.text : '';
+      $('#qfDiff').value = String(q ? q.difficulty : 2);
+      $('#qfIdeal').value = q ? (q.idealPoints || []).join('\n') : '';
+      $('#qfFollow').value = q ? (q.followUps || []).join('\n') : '';
+      chipRow(data.roles.map((r) => [r.id, r.label]), q ? q.roles || [] : [], '#qfRoles');
+      chipRow(data.topics.map((t) => [t.id, t.label]), q ? q.topics || [] : [], '#qfTopics');
+      $('#qfStatus').textContent = '';
+      $('#qForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    $('#addQBtn').addEventListener('click', () => openForm(null));
+    $('#qfCancel').addEventListener('click', () => { $('#qForm').hidden = true; editingId = null; });
+
+    $('#qfSave').addEventListener('click', async () => {
+      const text = $('#qfText').value.trim();
+      if (!text) return toast('Add the question text first.');
+      const btn = $('#qfSave');
+      const body = {
+        text,
+        roles: selRoles(),
+        topics: selTopics(),
+        difficulty: Number($('#qfDiff').value),
+        idealPoints: newLines('Ideal'),
+        followUps: newLines('Follow'),
+      };
+      btn.disabled = true;
+      $('#qfStatus').textContent = 'Saving…';
+      try {
+        if (editingId) {
+          await api(`/questions/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
+          toast('Question updated.');
+        } else {
+          await api('/questions', { method: 'POST', body: JSON.stringify(body) });
+          toast('Question added to the bank.');
+        }
+        const fresh = await api('/questions');
+        data.questions = fresh.questions;
+        draw(data.questions);
+        $('#bankCount').textContent = `${data.questions.length} questions · powering every interview`;
+        $('#qForm').hidden = true;
+        editingId = null;
+      } catch (err) {
+        toast('⚠️ ' + err.message, 5000);
+      } finally {
+        btn.disabled = false;
+        $('#qfStatus').textContent = '';
+      }
+    });
+
+    // Search + role filter
+    const applyFilters = () => {
+      const q = $('#qSearch').value.trim().toLowerCase();
+      const role = $('#qRoleFilter').value;
+      const list = data.questions.filter((x) =>
+        (!role || (x.roles || []).includes(role)) &&
+        (!q || x.text.toLowerCase().includes(q) || (x.idealPoints || []).some((p) => p.toLowerCase().includes(q)))
+      );
+      draw(list);
+    };
+    $('#qSearch').addEventListener('input', applyFilters);
+    $('#qRoleFilter').addEventListener('change', applyFilters);
+
+    // Delegated edit/delete
+    $('#qList').addEventListener('click', async (e) => {
+      const btn = e.target.closest('.icon-btn');
+      if (!btn) return;
+      const card = btn.closest('.q-card');
+      const id = card.dataset.id;
+      if (btn.dataset.act === 'edit') {
+        openForm(data.questions.find((x) => x.id === id));
+      } else if (btn.dataset.act === 'del' && confirm('Delete this question from the bank?')) {
+        try {
+          await api('/questions/' + id, { method: 'DELETE' });
+          const fresh = await api('/questions');
+          data.questions = fresh.questions;
+          draw(data.questions);
+          $('#bankCount').textContent = `${data.questions.length} questions · powering every interview`;
+          toast('Question deleted.');
+        } catch (err) {
+          toast('⚠️ ' + err.message, 5000);
+        }
+      }
+    });
+  }
+
+  // ------------------------------------------------------------
+  // ASSIGN (teacher)
+  // ------------------------------------------------------------
+  async function renderAssign() {
+    await loadMeta();
+    app.innerHTML = loading('Loading your students…');
+    const [studentsRes, sessionsRes] = await Promise.all([
+      api('/teacher/students').catch(() => ({ students: [] })),
+      api('/sessions').catch(() => ({ sessions: [] })),
+    ]);
+    const students = studentsRes.students;
+    const recent = sessionsRes.sessions.filter((s) => s.assignedBy).slice(0, 6);
+
+    app.innerHTML = `
+      <section class="view">
+        <div class="view-head">
+          <div>
+            <span class="eyebrow">✦ Teacher console</span>
+            <h2 class="section-title">Assign an interview</h2>
+            <p class="section-sub">Create a focused mock interview for a student — it appears instantly in their <strong>My interviews</strong>.</p>
+          </div>
+        </div>
+        <div class="assign-grid">
+          <div class="card assign-form">
+            <h3>New assignment</h3>
+            <div class="field">
+              <label>Student</label>
+              ${students.length
+                ? `<select class="input" id="asStudent"><option value="">Pick a student…</option>${students.map((s) => `<option value="${s.id}">${esc(s.username)}${s.sessionCount ? ` · ${s.sessionCount} session(s)` : ''}</option>`).join('')}</select>`
+                : `<div class="muted" style="font-size:13px;line-height:1.6;">No students yet. Ask a student to create an account on the sign-up screen — they'll appear here automatically.</div>`}
+            </div>
+            <div class="two-col">
+              <div class="field">
+                <label>Role</label>
+                <select class="input" id="asRole"><option value="">✨ Auto-detect</option>${state.meta.roles.filter((r) => r.id !== 'general').map((r) => `<option value="${r.id}">${esc(r.label)}</option>`).join('')}</select>
+              </div>
+              <div class="field">
+                <label>Company</label>
+                <select class="input" id="asCompany"><option value="">None</option>${state.meta.companies.map((c) => `<option value="${c.id}">${esc(c.label)}</option>`).join('')}</select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Number of questions</label>
+              <div class="range-row">
+                <input type="range" id="asCount" min="3" max="12" value="6" />
+                <span class="range-val" id="asCountVal">6</span>
+              </div>
+            </div>
+            <button class="btn" id="asGo" ${students.length ? '' : 'disabled'}>📤 Assign interview</button>
+            <span class="faint" id="asStatus" style="font-size:13px;margin-left:10px;"></span>
+          </div>
+          <div class="card assign-recent">
+            <h3>Recent assignments</h3>
+            ${recent.length
+              ? recent.map((s) => `
+                <div class="assign-item" onclick="location.hash='#/report/${s.id}'">
+                  <div class="ai-top"><span class="ai-student">🎓 ${esc(s.ownerUsername || 'student')}</span><span class="score-badge ${scoreClass(s.totalScore)}">${s.totalScore != null ? s.totalScore + '/100' : '—'}</span></div>
+                  <div class="ai-role">${esc(s.roleLabel || s.role || 'General')}${s.companyLabel ? ' · ' + esc(s.companyLabel) : ''}</div>
+                  <div class="ai-meta">${fmtDate(s.createdAt)} · ${s.questionCount ?? '–'} questions · ${s.status === 'completed' ? '✅ completed' : '⏳ in progress'}</div>
+                </div>`).join('')
+              : '<div class="muted" style="font-size:13px;line-height:1.6;">Nothing assigned yet — your assignments will appear here so you can check scores.</div>'}
+          </div>
+        </div>
+      </section>`;
+
+    $('#asCount').addEventListener('input', (e) => { $('#asCountVal').textContent = e.target.value; });
+
+    $('#asGo').addEventListener('click', async () => {
+      const studentId = $('#asStudent').value;
+      if (!studentId) return toast('Pick a student to assign this interview to.');
+      const btn = $('#asGo');
+      btn.disabled = true;
+      $('#asStatus').textContent = 'Creating interview…';
+      try {
+        const res = await api('/teacher/assign', {
+          method: 'POST',
+          body: JSON.stringify({
+            studentId,
+            role: $('#asRole').value || undefined,
+            company: $('#asCompany').value || undefined,
+            questionCount: Number($('#asCount').value),
+          }),
+        });
+        toast(`Interview assigned to ${res.student.username}.`);
+        renderAssign(); // refresh the recent-assignments list
+      } catch (err) {
+        toast('⚠️ ' + err.message, 5000);
+      } finally {
+        btn.disabled = false;
+        $('#asStatus').textContent = '';
+      }
+    });
+  }
+
+  // ------------------------------------------------------------
   // Boot
   // ------------------------------------------------------------
-  if (!location.hash) location.hash = '#/home';
-  navigate();
+  (async function boot() {
+    try {
+      const me = await api('/auth/me');
+      state.user = me.user;
+    } catch {
+      state.user = null;
+    }
+    applyRole();
+    renderNav();
+    if (!location.hash || location.hash === '#/' ) location.hash = '#/home';
+    navigate();
+  })();
 })();
