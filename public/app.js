@@ -59,6 +59,94 @@
     `<div class="loading"><div class="spinner"></div><div>${esc(label)}</div></div>`;
 
   // ------------------------------------------------------------
+  // Theme, mobile nav, landing scroll helpers
+  // ------------------------------------------------------------
+  function initTheme() {
+    let saved = 'light';
+    try { saved = localStorage.getItem('iq_theme') || 'light'; } catch {}
+    document.body.dataset.theme = saved;
+  }
+
+  function toggleTheme() {
+    const next = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.body.dataset.theme = next;
+    try { localStorage.setItem('iq_theme', next); } catch {}
+  }
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  window.scrollToSection = scrollToSection;
+
+  /** Scrolls to a landing section; navigates to the landing page first if needed. */
+  function goToSection(id) {
+    if (document.getElementById(id)) { scrollToSection(id); return; }
+    location.hash = '#/';
+    setTimeout(() => scrollToSection(id), 120);
+  }
+  window.goToSection = goToSection;
+
+  function setupBurger() {
+    const burger = $('#burger');
+    const nav = $('#topnav');
+    if (!burger || !nav) return;
+    burger.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', (e) => {
+      if (e.target.closest('.nav-link')) {
+        nav.classList.remove('open');
+        burger.classList.remove('open');
+      }
+    });
+  }
+
+  /** Observes .reveal elements and fades them in once visible. */
+  function bindReveals(root) {
+    const els = (root || document).querySelectorAll('.reveal:not(.in)');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach((el) => io.observe(el));
+  }
+
+  /** Animates a counter element from 0 to its data-count (or text) target. */
+  function animateCounters(root) {
+    const els = (root || document).querySelectorAll('[data-count]');
+    const run = (el) => {
+      const target = Number(el.dataset.count || 0);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1300;
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    };
+    if (!('IntersectionObserver' in window)) { els.forEach(run); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { run(en.target); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.4 });
+    els.forEach((el) => io.observe(el));
+  }
+
+  // ------------------------------------------------------------
   // API client
   // ------------------------------------------------------------
   async function api(path, opts = {}) {
@@ -104,25 +192,36 @@
   function renderNav() {
     const nav = $('#topnav');
     const right = $('#topbarRight');
+    const themeBtn = `<button class="theme-toggle" id="themeBtn" title="Toggle dark mode">${document.body.dataset.theme === 'dark' ? '☀️' : '🌙'}</button>`;
     if (!state.user) {
-      nav.innerHTML = '';
-      right.innerHTML = `<a href="#/auth" class="nav-link" data-route="auth">Log in / Sign up</a>`;
+      nav.innerHTML = `
+        <button class="nav-link" data-anchor="problem" onclick="goToSection('problem')">Problem</button>
+        <button class="nav-link" data-anchor="solution" onclick="goToSection('solution')">Solution</button>
+        <button class="nav-link" data-anchor="features" onclick="goToSection('features')">Features</button>
+        <button class="nav-link" data-anchor="how" onclick="goToSection('how')">How it works</button>
+        <button class="nav-link" data-anchor="vision" onclick="goToSection('vision')">Vision</button>`;
+      right.innerHTML = `${themeBtn}<a href="#/auth" class="nav-link" data-route="auth">Log in</a><a class="btn nav-cta" href="#/auth">Request Demo</a>`;
+      const tb = $('#themeBtn');
+      if (tb) tb.addEventListener('click', () => { toggleTheme(); tb.textContent = document.body.dataset.theme === 'dark' ? '☀️' : '🌙'; });
       return;
     }
     const links = isTeacher()
       ? [['home', '📊 Dashboard'], ['bank', '📚 Question bank'], ['assign', '🎯 Assign interview']]
       : [['home', '🏠 Home'], ['setup', '🚀 New interview'], ['mine', '📥 My interviews'], ['history', '📈 History']];
     nav.innerHTML = links.map(([r, l]) => `<a href="#/${r}" class="nav-link" data-route="${r}">${l}</a>`).join('');
-    const icon = isTeacher() ? '👩🏫' : '🧑‍🎓';
+    const icon = isTeacher() ? '👩‍🏫' : '🧑‍🎓';
     right.innerHTML = `
+      ${themeBtn}
       <span class="user-chip"><span class="uc-icon">${icon}</span><span class="uc-name">${esc(state.user.username)}</span></span>
       <button class="nav-link logout-btn" id="logoutBtn" title="Log out">Log out</button>`;
+    const tb = $('#themeBtn');
+    if (tb) tb.addEventListener('click', () => { toggleTheme(); tb.textContent = document.body.dataset.theme === 'dark' ? '☀️' : '🌙'; });
     $('#logoutBtn').addEventListener('click', async () => {
       try { await api('/auth/logout', { method: 'POST' }); } catch {}
       state.user = null;
       applyRole();
       renderNav();
-      location.hash = '#/auth';
+      location.hash = '#/';
     });
   }
 
@@ -136,6 +235,7 @@
   // Router (role-guarded)
   // ------------------------------------------------------------
   const routes = {
+    landing: renderLanding,
     auth: renderAuth,
     home: renderHome,
     setup: renderSetup,
@@ -152,9 +252,17 @@
     const [route, param] = hash.split('/');
 
     if (!state.user) {
-      setNavActive('auth');
-      if (route !== 'auth') { location.hash = '#/auth'; return; }
-      renderAuth();
+      if (route === 'auth') {
+        setNavActive('auth');
+        renderAuth();
+        return;
+      }
+      if (route === '' || route === 'landing') {
+        setNavActive('landing');
+        renderLanding();
+        return;
+      }
+      location.hash = '#/';
       return;
     }
 
@@ -166,6 +274,335 @@
   }
 
   window.addEventListener('hashchange', navigate);
+
+  // ------------------------------------------------------------
+  // LANDING (public marketing site)
+  // ------------------------------------------------------------
+  async function renderLanding() {
+    const qs = 78;
+    const roles = 6;
+    const topics = 15;
+    const llm = 'Local AI engine';
+
+    const features = [
+      ['🧩', 'AI Code Segmentation', 'Automatically divides experiments into meaningful logical blocks — each with an explanation, walkthrough, and checkpoint.'],
+      ['🤖', 'Interactive Learning', 'Checkpoint questions after every block replace passive copying with real understanding.'],
+      ['🎤', 'AI Viva', 'Generate viva questions instantly from any experiment, topic, or code block.'],
+      ['📝', 'Smart MCQ Generator', 'Teacher selects a topic — AI creates the quiz automatically, ready in seconds.'],
+      ['🚀', 'GitHub Portfolio', 'Push every completed experiment to GitHub and build a recruiter-ready portfolio.'],
+      ['📊', 'Teacher Analytics', 'Performance dashboards, weak-concept detection, completion rates, and student rankings.'],
+      ['✅', 'Attendance Integration', 'Optional attendance linked directly to lab completion — no manual registers.'],
+      ['📄', 'AI Notes', 'Generate experiment summaries and documentation automatically, every single time.'],
+    ];
+
+    const benefits = [
+      ['🎓', 'For Students', [
+        'Learn instead of memorizing', 'Build a GitHub portfolio', 'AI explanations on demand', 'Viva preparation built in', 'Faster, deeper learning',
+      ]],
+      ['👩‍🏫', 'For Teachers', [
+        'Zero record checking', 'Automatic quiz generation', 'Live student analytics', 'Instant evaluation', 'Dramatically reduced workload',
+      ]],
+      ['🏛️', 'For Colleges', [
+        'Digital practical records', 'Better student outcomes', 'NBA / NAAC accreditation support', 'Higher placement readiness', 'One platform for every lab',
+      ]],
+    ];
+
+    const timeline = [
+      ['👩‍🎓', 'Student enters the lab', 'Attendance and context captured automatically. No more paper registers.'],
+      ['🧠', 'Teacher creates AI quiz', 'Pick previous topics — AI generates an MCQ quiz in seconds.'],
+      ['✍️', 'Students complete assessment', 'A focused 10–20 minute check that sets the baseline.'],
+      ['📣', 'Teacher explains the experiment', 'Live scores show exactly who is ready before the practical starts.'],
+      ['⌨️', 'Teacher pastes the code', 'The experiment source goes in — the AI takes it from there.'],
+      ['🧩', 'AI divides code into blocks', 'Logical segments with explanations, questions, and walkthroughs.'],
+      ['✅', 'Students answer checkpoints', 'No blind copying — each block must be understood to continue.'],
+      ['🏁', 'Experiment completed', 'Every student finishes with genuine understanding, proven.'],
+      ['📝', 'AI generates notes', 'Documentation, summaries, and reflection notes — automatically.'],
+      ['🚀', 'Student pushes to GitHub', 'A growing portfolio that proves practical skill to recruiters.'],
+    ];
+
+    const extras = [
+      ['🗣️', 'AI Viva Practice'], ['🏆', 'Leaderboard'], ['📈', 'Semester Progress'], ['🔥', 'Learning Streaks'],
+      ['🎖️', 'Achievements'], ['💼', 'Portfolio Builder'], ['📚', 'Experiment Library'], ['📊', 'Analytics Dashboard'],
+      ['🌙', 'Dark Mode'], ['🔔', 'Notifications'], ['🔐', 'Role-based Login'], ['🛠️', 'Admin Dashboard'], ['📤', 'Export Reports'],
+    ];
+
+    const vision = [
+      ['🤖', 'AI Tutor', 'Personal guidance for every student, 24/7.'],
+      ['🧪', 'AI Lab Assistant', 'In-lab help whenever a student is stuck.'],
+      ['🗣️', 'Automatic Viva', 'Oral exams that grade themselves.'],
+      ['💼', 'Placement Portfolio', 'Proof of skill recruiters can verify.'],
+      ['📊', 'Skill Analytics', 'Granular insight into every competency.'],
+      ['🔬', 'Research Projects', 'Capstone and research workflows included.'],
+      ['🏫', 'University ERP Integration', 'One system across the whole campus.'],
+      ['🤝', 'Recruiter Access', 'Direct bridge from classroom to hiring.'],
+    ];
+
+    const testimonials = [
+      ['Ananya', 'Student, CSE · 3rd year', 'I stopped copying code. The checkpoints make sure you actually understand each block before moving on — my viva scores went way up.'],
+      ['Dr. Rajesh', 'Faculty, Computer Science', 'I no longer spend evenings checking records. The AI does the evaluation and I get analytics instead of piles of paper.'],
+      ['Prof. Meera', 'HOD, ECE Department', 'The weakest-concepts view changed how we plan labs. Attendance, assessment, and portfolios — all in one place.'],
+      ['Dr. Srinivas', 'Principal', 'This is exactly the kind of practical-proof infrastructure accreditation bodies and recruiters want to see.'],
+    ];
+
+    app.innerHTML = `
+      <div class="landing">
+
+        <!-- HERO -->
+        <section class="hero-section">
+          <div class="l-wrap">
+            <span class="hero-badge reveal"><span class="pulse-dot"></span> ${esc(llm)} · Built for colleges</span>
+            <h1 class="l-title reveal reveal-delay-1">The Future of<br/><span class="grad-text">Practical Learning</span></h1>
+            <p class="l-sub reveal reveal-delay-2">Replace handwritten lab records with AI-powered learning, assessments, and GitHub portfolio generation. One platform for students, teachers, and colleges.</p>
+            <div class="hero-actions reveal reveal-delay-3">
+              <a class="btn" href="#/auth">Request Demo <span style="font-size:16px;">→</span></a>
+              <a class="btn btn-ghost" href="#/" onclick="event.preventDefault();scrollToSection('solution');"><span class="play-ico">▶</span> Watch Demo</a>
+            </div>
+
+            <div class="hero-pipeline reveal reveal-delay-3">
+              <div class="pipe-stage">
+                <div class="pipe-card"><div class="pipe-ico">👩‍🏫</div><div class="pipe-name">Teacher Dashboard</div><div class="pipe-desc">Create, quiz, and monitor</div></div>
+                <span class="pipe-arrow">→</span>
+                <div class="pipe-card"><div class="pipe-ico">⚡</div><div class="pipe-name">AI Engine</div><div class="pipe-desc">Segment · quiz · explain · score</div></div>
+                <span class="pipe-arrow">→</span>
+                <div class="pipe-card"><div class="pipe-ico">🧑‍🎓</div><div class="pipe-name">Student Learning</div><div class="pipe-desc">Checkpoints &amp; viva prep</div></div>
+                <span class="pipe-arrow">→</span>
+                <div class="pipe-card"><div class="pipe-ico">🐙</div><div class="pipe-name">GitHub Portfolio</div><div class="pipe-desc">Proof of every experiment</div></div>
+              </div>
+              <div class="pipe-flow">
+                <span class="pf-chip">Before Lab</span><span class="pf-x">→</span>
+                <span class="pf-chip">During Lab</span><span class="pf-x">→</span>
+                <span class="pf-chip">After Lab</span><span class="pf-x">→</span>
+                <span class="pf-chip">Portfolio Ready</span>
+              </div>
+            </div>
+
+            <div class="hero-stats">
+              <div class="hstat reveal"><div class="hstat-num grad-text" id="st-q" data-count="${qs}">0</div><div class="hstat-lbl">curated questions</div></div>
+              <div class="hstat reveal reveal-delay-1"><div class="hstat-num grad-text" id="st-t" data-count="${topics}">0</div><div class="hstat-lbl">learning topics</div></div>
+              <div class="hstat reveal reveal-delay-2"><div class="hstat-num grad-text" id="st-r" data-count="${roles}">0</div><div class="hstat-lbl">career roles</div></div>
+              <div class="hstat reveal reveal-delay-3"><div class="hstat-num grad-text" id="st-s" data-count="10">0</div><div class="hstat-lbl">AI-powered steps</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROBLEM -->
+        <section class="l-section" id="problem">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ The problem</span>
+            <h2 class="l-title reveal">Traditional Labs Are <span class="grad-text">Broken</span></h2>
+            <p class="l-sub reveal">Copy-paste practicals teach nothing, and the record book wastes everyone's time.</p>
+            <div class="problem-grid">
+              <div class="problem-card reveal"><div class="p-ico">📋</div><h3>Copy-paste culture</h3><p>Students copy code without understanding a single line they submit.</p></div>
+              <div class="problem-card reveal reveal-delay-1"><div class="p-ico">⏰</div><h3>Hours wasted</h3><p>Hours and hours lost writing record books nobody ever reads.</p></div>
+              <div class="problem-card reveal reveal-delay-2"><div class="p-ico">📚</div><h3>Teacher overload</h3><p>Teachers spend too much time checking records — and too little time teaching.</p></div>
+              <div class="problem-card reveal reveal-delay-3"><div class="p-ico">❓</div><h3>No proof of learning</h3><p>Students leave with no practical proof of what they actually learned.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SOLUTION -->
+        <section class="l-section solution-section" id="solution">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ The solution</span>
+            <h2 class="l-title reveal">One Platform.<br/><span class="grad-text">Complete Practical Learning.</span></h2>
+            <p class="l-sub reveal">AI wraps around the entire laboratory workflow — before, during, and after every lab.</p>
+            <div class="workflow">
+              <div class="step-card reveal">
+                <span class="step-num">Step 1</span>
+                <span class="step-phase">Before Lab</span>
+                <h3>Knowledge Check</h3>
+                <ul>
+                  <li><span class="chk">✓</span><span>Teacher selects previous topics</span></li>
+                  <li><span class="chk">✓</span><span>AI generates an MCQ quiz</span></li>
+                  <li><span class="chk">✓</span><span>Students finish a 10–20 min assessment</span></li>
+                  <li><span class="chk">✓</span><span>Teacher sees live scores</span></li>
+                </ul>
+              </div>
+              <div class="step-card reveal reveal-delay-1">
+                <span class="step-num">Step 2</span>
+                <span class="step-phase">During Lab</span>
+                <h3>Guided Understanding</h3>
+                <ul>
+                  <li><span class="chk">✓</span><span>Teacher pastes the experiment code</span></li>
+                  <li><span class="chk">✓</span><span>AI splits it into logical blocks</span></li>
+                  <li><span class="chk">✓</span><span>Each block gets explanation + questions</span></li>
+                  <li><span class="chk">✓</span><span>Mini checkpoints — no blind continuing</span></li>
+                </ul>
+              </div>
+              <div class="step-card reveal reveal-delay-2">
+                <span class="step-num">Step 3</span>
+                <span class="step-phase">After Lab</span>
+                <h3>Proof &amp; Portfolio</h3>
+                <ul>
+                  <li><span class="chk">✓</span><span>Complete code + AI documentation</span></li>
+                  <li><span class="chk">✓</span><span>Experiment summary &amp; reflection notes</span></li>
+                  <li><span class="chk">✓</span><span>One-click GitHub push</span></li>
+                  <li><span class="chk">✓</span><span>Learning analytics for every student</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="l-section" id="features">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ Features</span>
+            <h2 class="l-title reveal">Everything a Modern Lab Needs</h2>
+            <p class="l-sub reveal">Eight core capabilities working together to transform the laboratory experience.</p>
+            <div class="feature-grid">
+              ${features.map((f, i) => `<div class="feature reveal reveal-delay-${i % 3}"><div class="icon">${f[0]}</div><h3>${esc(f[1])}</h3><p>${esc(f[2])}</p></div>`).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section class="l-section" id="benefits">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ Benefits</span>
+            <h2 class="l-title reveal">Worth It for <span class="grad-text">Everyone</span></h2>
+            <p class="l-sub reveal">Students learn more, teachers do less admin, and colleges look better on paper.</p>
+            <div class="benefits-grid">
+              ${benefits.map((b, i) => `
+                <div class="benefit-card reveal reveal-delay-${i % 3}">
+                  <div class="b-ico">${b[0]}</div>
+                  <h3>${esc(b[1])}</h3>
+                  <div class="b-aud">Key outcomes</div>
+                  <ul>${b[2].map((item) => `<li><span class="chk">✓</span><span>${esc(item)}</span></li>`).join('')}</ul>
+                </div>`).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="l-section how-section" id="how">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ How it works</span>
+            <h2 class="l-title reveal">From Lab Entry to <span class="grad-text">GitHub Portfolio</span></h2>
+            <p class="l-sub reveal">Ten steps. Zero paperwork. Scroll through the complete journey.</p>
+            <div class="timeline">
+              ${timeline.map((t) => `<div class="tl-item reveal"><span class="tl-dot">${t[0]}</span><div class="tl-card"><h4>${esc(t[1])}</h4><p>${esc(t[2])}</p></div></div>`).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- EXTRA FEATURES -->
+        <section class="l-section" id="extras">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ Plus</span>
+            <h2 class="l-title reveal">A Platform, <span class="grad-text">Not Just a Tool</span></h2>
+            <p class="l-sub reveal">Gamified learning, dashboards, and integrations — everything students love and admins need.</p>
+            <div class="extras-grid">
+              ${extras.map((e, i) => `<div class="extra-chip reveal reveal-delay-${i % 3}"><span class="ex-ico">${e[0]}</span><span>${esc(e[1])}</span></div>`).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- VISION -->
+        <section class="l-section vision-section" id="vision">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ Future vision</span>
+            <h2 class="l-title reveal">Beyond Digital <span class="grad-text">Records</span></h2>
+            <p class="l-sub reveal">This platform is evolving into the operating system for practical education.</p>
+            <div class="vision-grid">
+              ${vision.map((v, i) => `<div class="vision-card reveal reveal-delay-${i % 3}"><div class="v-ico">${v[0]}</div><h4>${esc(v[1])}</h4><p>${esc(v[2])}</p></div>`).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="l-section" id="testimonials">
+          <div class="l-wrap l-center">
+            <span class="l-eyebrow reveal">✦ Testimonials</span>
+            <h2 class="l-title reveal">Loved Across the <span class="grad-text">Campus</span></h2>
+            <div class="testimonial-grid">
+              ${testimonials.map((t, i) => `
+                <div class="testimonial-card reveal reveal-delay-${i % 3}">
+                  <div class="t-stars">★★★★★</div>
+                  <div class="t-quote">“${esc(t[2])}”</div>
+                  <div class="t-person">
+                    <div class="t-avatar">${esc(t[0][0])}</div>
+                    <div><div class="t-name">${esc(t[0])}</div><div class="t-role">${esc(t[1])}</div></div>
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="cta-section">
+          <div class="l-wrap">
+            <div class="cta-card reveal">
+              <h2>Ready to Transform Practical Learning?</h2>
+              <p>See how colleges are replacing record books with real, provable learning.</p>
+              <div class="cta-actions">
+                <a class="btn" href="#/auth">Book a Demo →</a>
+                <a class="btn btn-white-ghost" href="mailto:hello@interviewiq.app">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="landing-footer">
+          <div class="l-wrap">
+            <div class="footer-grid">
+              <div class="footer-brand">
+                <a class="brand" href="#/"><span class="brand-mark">🎯</span><span class="brand-name">Interview<span class="brand-accent">IQ</span></span></a>
+                <p>AI-powered practical learning for colleges — replacing handwritten records with understanding, assessment, and real GitHub portfolios.</p>
+              </div>
+              <div class="footer-col">
+                <h5>Product</h5>
+                <a href="#/" onclick="event.preventDefault();scrollToSection('features')">Features</a>
+                <a href="#/" onclick="event.preventDefault();scrollToSection('solution')">How it works</a>
+                <a href="#/auth">Pricing</a>
+                <a href="#/" onclick="event.preventDefault();scrollToSection('testimonials')">FAQs</a>
+              </div>
+              <div class="footer-col">
+                <h5>Company</h5>
+                <a href="#/auth">About</a>
+                <a href="#/auth">Contact</a>
+                <a href="#/auth">Privacy</a>
+                <a href="#/auth">Terms</a>
+              </div>
+              <div class="footer-col">
+                <h5>Connect</h5>
+                <div class="footer-social">
+                  <a href="https://www.linkedin.com" target="_blank" rel="noopener" title="LinkedIn">in</a>
+                  <a href="https://github.com" target="_blank" rel="noopener" title="GitHub">⌥</a>
+                </div>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <span>© ${new Date().getFullYear()} InterviewIQ · AI Practical Learning Platform</span>
+              <span>Made for colleges that care about real learning.</span>
+            </div>
+          </div>
+        </footer>
+      </div>`;
+
+    bindReveals();
+    animateCounters();
+    window.scrollTo(0, 0);
+
+    // Hydrate real stats + AI status without blocking first paint
+    api('/health').catch(() => null).then((h) => {
+      if (!h) return;
+      [
+        ['st-q', h.kb?.questions],
+        ['st-t', h.kb?.topics],
+        ['st-r', h.kb?.roles],
+      ].forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el && val != null) {
+          el.dataset.count = val;
+          animateCounters(el.parentElement);
+        }
+      });
+      const badge = document.querySelector('.hero-badge');
+      if (badge) badge.innerHTML = `<span class="pulse-dot"></span> ${esc(h.llm ? 'AI engine online' : 'Local AI engine')} · Built for colleges`;
+    });
+  }
 
   // ------------------------------------------------------------
   // AUTH
@@ -759,7 +1196,7 @@
           <div class="gauge-wrap" style="margin-top:26px;">
             <div class="gauge">
               <svg width="190" height="190" viewBox="0 0 190 190">
-                <circle cx="95" cy="95" r="80" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="13"/>
+                <circle cx="95" cy="95" r="80" fill="none" style="stroke:var(--chart-track)" stroke-width="13"/>
                 <circle id="gaugeArc" cx="95" cy="95" r="80" fill="none" stroke="url(#gGrad)" stroke-width="13" stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="502"/>
                 <defs><linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
               </svg>
@@ -918,12 +1355,12 @@
     labels.forEach(([k], i) => {
       const ang = (Math.PI * 2 * i) / labels.length - Math.PI / 2;
       const x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
-      grid += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,0.08)"/>`;
+      grid += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" style="stroke:var(--chart-track)"/>`;
       const lx = cx + (r + 20) * Math.cos(ang), ly = cy + (r + 20) * Math.sin(ang);
-      grid += `<text x="${lx}" y="${ly}" fill="#9aa4bf" font-size="10" text-anchor="middle" dominant-baseline="middle">${labels[i][1]}</text>`;
+      grid += `<text x="${lx}" y="${ly}" style="fill:var(--text-faint)" font-size="10" text-anchor="middle" dominant-baseline="middle">${labels[i][1]}</text>`;
     });
     for (const ring of [0.33, 0.66, 1]) {
-      grid += `<polygon points="${labels.map(([k], i) => { const ang = (Math.PI * 2 * i) / labels.length - Math.PI / 2; return `${cx + r * ring * Math.cos(ang)},${cy + r * ring * Math.sin(ang)}`; }).join(' ')}" fill="none" stroke="rgba(255,255,255,0.07)"/>`;
+      grid += `<polygon points="${labels.map(([k], i) => { const ang = (Math.PI * 2 * i) / labels.length - Math.PI / 2; return `${cx + r * ring * Math.cos(ang)},${cy + r * ring * Math.sin(ang)}`; }).join(' ')}" fill="none" style="stroke:var(--chart-track)"/>`;
     }
     poly = labels.map(([k], i) => {
       const ang = (Math.PI * 2 * i) / labels.length - Math.PI / 2;
@@ -1313,6 +1750,8 @@
   // Boot
   // ------------------------------------------------------------
   (async function boot() {
+    initTheme();
+    setupBurger();
     try {
       const me = await api('/auth/me');
       state.user = me.user;
@@ -1321,7 +1760,9 @@
     }
     applyRole();
     renderNav();
-    if (!location.hash || location.hash === '#/' ) location.hash = '#/home';
+    if (!location.hash || location.hash === '#/') {
+      location.hash = state.user ? '#/home' : '#/';
+    }
     navigate();
   })();
 })();
